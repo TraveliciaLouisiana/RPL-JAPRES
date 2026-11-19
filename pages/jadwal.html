@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JAPRES | Jadwal Perkuliahan</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/jadwal.css">
+  <script src="../js/global.js" defer></script>
+  <script src="../js/jadwal.js" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+
+<body data-page="jadwal">
+  <aside class="sidebar">
+    <a class="brand" href="jadwal.html"><span class="brand-icon"><i class="fa-solid fa-calendar"></i></span> JAPRES</a>
+    <nav class="nav-menu">
+      <a class="nav-link active" href="jadwal.html"><span><i class="fa-regular fa-calendar-days"></i></span> Jadwal
+        Perkuliahan</a>
+      <a class="nav-link" href="kelompok.html"><span><i class="fa-solid fa-users"></i></span> Informasi Kelompok</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="side-info"><span><i class="fa-solid fa-bookmark"></i></span>
+        <div><small>Mata Kuliah</small><strong>RPL – Kelas A</strong></div>
+      </div>
+      <div class="side-info"><span><i class="fa-solid fa-users"></i></span>
+        <div><small>Kelompok Anda</small><strong id="sidebarGroup">Kelompok 2</strong></div>
+      </div>
+      <div class="profile"><span class="avatar-small"><i class="fa-solid fa-user"></i></span>
+        <div><strong>Vivian Kimora</strong><small>Mahasiswa</small></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span> Informatika
+        UNPAR • Tahun Akademik 2026/2027</div>
+      <div class="top-actions"><span class="welcome">Selamat Datang, Vivian</span><button class="primary-btn"
+          id="newScheduleBtn">＋ New Schedule</button></div>
+    </header>
+
+    <section class="student-card">
+      <div class="avatar"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <h3>Vivian Kimora <span class="status-pill">Mahasiswa Aktif</span></h3>
+        <p>NPM: 6182601002</p>
+      </div>
+    </section>
+
+    <section class="legend">
+      <span><i class="dot dot-class"></i> Kuliah Pribadi</span>
+      <span><i class="dot dot-presentation"></i> Jadwal Presentasi Kelompok</span>
+      <span><i class="dot dot-free"></i> Slot Kosong</span>
+    </section>
+
+    <section class="calendar-wrap">
+      <div class="calendar-grid" id="calendarGrid">
+        <div class="calendar-head time-head">Waktu<br><small>Minggu ke-15</small></div>
+        <div class="calendar-head">SENIN<small>14 Desember</small></div>
+        <div class="calendar-head">SELASA<small>15 Desember</small></div>
+        <div class="calendar-head today">RABU<small>16 Desember<br>Hari Presentasi</small></div>
+        <div class="calendar-head">KAMIS<small>17 Desember</small></div>
+        <div class="calendar-head">JUMAT<small>18 Desember</small></div>
+        <div class="time-label">07.00</div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="time-label">08.00</div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Pemrograman Berbasis Web"
+            data-time="08:00–10:00" data-day="Senin"><small>JADWAL MATA KULIAH</small><b>Pemrograman Berbasis
+              Web</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Pemrograman Berbasis Web"
+            data-time="08:00–10:00" data-day="Rabu"><small>JADWAL MATA KULIAH</small><b>Pemrograman Berbasis
+              Web</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Rekayasa Perangkat Lunak"
+            data-time="09:00–11:00" data-day="Jumat"><small>JADWAL MATA KULIAH</small><b>Rekayasa Perangkat
+              Lunak</b><span>Kelas A</span></button></div>
+        <div class="time-label">10.00</div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"><button class="event presentation-event"
+  data-title="RPL Presentasi Kelompok 2"
+  data-time="10:30–11:00"
+  data-day="Rabu"
+  data-date="16 Desember 2026"
+  data-note="Luring"
+  data-place="Lab. 09.00.0017 Semi Basement Gd.9">
+  <div class="event-top">
+    <span class="event-badge">PRESENTASI</span>
+    <span class="event-time">10:30–11:00</span>
+  </div>
+  <strong class="event-title">RPL Presentasi<br>Kelompok 2</strong>
+  <div class="event-meta">
+    <span>Tanggal: 16 Desember 2026</span>
+    <span>Keterangan: Luring</span>
+    <span>Tempat: Lab. 09.00.0017 Semi Basement Gd.9</span>
+  </div>
+</button></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="time-label">12.00</div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="time-label">13.00</div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Artificial Intelligence"
+            data-time="13:00–15:00" data-day="Senin"><small>JADWAL MATA KULIAH</small><b>Artificial
+              Intelligence</b><span>Kelas A</span><small>Dosen: Lannes</small></button></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Desain Antarmuka Grafis"
+            data-time="13:00–15:00" data-day="Rabu"><small>JADWAL MATA KULIAH</small><b>Desain Antarmuka
+              Grafis</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="time-label">15.00</div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Rekayasa Perangkat Lunak"
+            data-time="15:00–17:00" data-day="Senin"><small>JADWAL MATA KULIAH</small><b>Rekayasa Perangkat
+              Lunak</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Manajemen Proyek"
+            data-time="15:00–17:00" data-day="Selasa"><small>JADWAL MATA KULIAH</small><b>Manajemen
+              Proyek</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"><button class="event presentation-event compact" data-title="RPL Presentasi"
+            data-time="15:30–16:00" data-day="Rabu" data-date="16 Desember 2026"
+            data-place="Ruang kelas"><small>PRESENTASI</small><strong>RPL Presentasi</strong></button></div>
+        <div class="calendar-cell"><button class="event class-event" data-title="Rekayasa Perangkat Lunak"
+            data-time="15:00–17:00" data-day="Kamis"><small>JADWAL MATA KULIAH</small><b>Rekayasa Perangkat
+              Lunak</b><span>Kelas A</span></button></div>
+        <div class="calendar-cell"></div>
+        <div class="time-label">17.00</div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+        <div class="calendar-cell"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="scheduleModal">
+    <div class="modal">
+      <button class="modal-close" data-close="scheduleModal">×</button>
+      <h2 id="modalTitle">Detail Jadwal</h2>
+      <div id="modalBody"></div>
+      <button class="primary-btn modal-ok" data-close="scheduleModal">Tutup</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="newScheduleModal">
+    <form class="modal form-modal" id="scheduleForm">
+      <button type="button" class="modal-close" data-close="newScheduleModal">×</button>
+      <h2>Tambah Jadwal</h2>
+      <label>Nama kegiatan<input name="title" required placeholder="Contoh: Presentasi Kelompok 2"></label>
+      <label>Hari<select name="day">
+          <option>Senin</option>
+          <option>Selasa</option>
+          <option>Rabu</option>
+          <option>Kamis</option>
+          <option>Jumat</option>
+        </select></label>
+      <label>Waktu<input name="time" required placeholder="10:30–11:00"></label>
+      <label>Keterangan<input name="note" placeholder="Contoh: Luring"></label>
+      <button class="primary-btn" type="submit">Simpan Jadwal</button>
+    </form>
+  </div>
+</body>
+
+</html>
