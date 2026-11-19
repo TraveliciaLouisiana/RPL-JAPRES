@@ -1,0 +1,344 @@
+:root {
+    --blue: #08a8e8;
+    --blue-dark: #0076ae;
+    --pale: #edf3ff;
+    --bg: #f7f8ff;
+    --ink: #14243b;
+    --muted: #667080;
+    --line: #edf0f6;
+    --white: #fff
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px
+}
+
+button,
+input,
+select {
+    font: inherit
+}
+
+button {
+    cursor: pointer
+}
+
+a {
+    color: inherit;
+    text-decoration: none
+}
+
+.sidebar {
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 264px;
+    background: #fff;
+    padding: 24px 16px;
+    box-shadow: 2px 0 12px rgba(22, 45, 75, .035);
+    display: flex;
+    flex-direction: column
+}
+
+.brand {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    padding-left: 8px
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: #e8f6ff;
+    color: var(--blue);
+    font-size: 20px
+}
+
+.nav-menu {
+    display: grid;
+    gap: 7px;
+    margin-top: 26px
+}
+
+.nav-link {
+    height: 38px;
+    padding: 0 15px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #3e4856;
+    font-weight: 600
+}
+
+.nav-link span {
+    font-size: 18px
+}
+
+.nav-link.active {
+    background: #edf3ff;
+    color: var(--blue-dark)
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    display: grid;
+    gap: 8px;
+    padding: 0 8px 8px
+}
+
+.side-info,
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #edf3ff;
+    border-radius: 9px;
+    padding: 9px 12px;
+    min-height: 46px
+}
+
+.side-info>span {
+    color: var(--blue-dark);
+    font-size: 18px
+}
+
+.side-info div,
+.profile div {
+    display: grid;
+    gap: 1px
+}
+
+.side-info small,
+.profile small {
+    font-size: 11px;
+    color: #46515e
+}
+
+.side-info strong,
+.profile strong {
+    font-size: 13px;
+    font-weight: 600
+}
+
+.profile {
+    background: #edf3ff
+}
+
+.avatar-small {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #006b9d;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-size: 19px
+}
+
+.main-content {
+    margin-left: 264px;
+    min-height: 100vh;
+    padding: 0 24px 40px
+}
+
+.topbar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px
+}
+
+.course-line {
+    color: #414b59;
+    display: flex;
+    align-items: center;
+    gap: 10px
+}
+
+.blue-icon {
+    color: var(--blue);
+    font-size: 20px
+}
+
+.welcome {
+    background: #eff3ff;
+    border-radius: 9px;
+    padding: 7px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap
+}
+
+.primary-btn {
+    border: 0;
+    background: var(--blue);
+    color: #fff;
+    border-radius: 9px;
+    padding: 11px 17px;
+    font-weight: 700
+}
+
+.primary-btn:hover {
+    background: #008fc9
+}
+
+.soft-btn {
+    border: 0;
+    background: #edf3ff;
+    color: #006fa7;
+    border-radius: 9px;
+    padding: 10px 15px;
+    font-weight: 600
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 31, 50, .28);
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    padding: 20px
+}
+
+.hidden {
+    display: none !important
+}
+
+.modal {
+    position: relative;
+    width: min(480px, 100%);
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 18px 50px #14243b2b
+}
+
+.modal h2 {
+    font-size: 20px;
+    margin: 0 0 18px
+}
+
+.modal-close {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    border: 0;
+    background: transparent;
+    font-size: 26px;
+    color: #657080
+}
+
+.modal-ok {
+    margin-top: 18px
+}
+
+.form-modal {
+    display: grid;
+    gap: 13px
+}
+
+.form-modal label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600
+}
+
+.form-modal input,
+.form-modal select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #dce3ee;
+    border-radius: 8px;
+    background: white
+}
+
+.form-modal .primary-btn {
+    margin-top: 5px
+}
+
+.toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: #17364d;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 10px;
+    z-index: 30;
+    box-shadow: 0 8px 25px #14243b2b
+}
+
+@media(max-width:800px) {
+    .sidebar {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 12px
+    }
+
+    .nav-menu {
+        display: flex;
+        margin-top: 10px
+    }
+
+    .sidebar-bottom {
+        display: none
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0 12px 30px
+    }
+
+    .topbar {
+        height: auto;
+        min-height: 64px;
+        flex-wrap: wrap
+    }
+
+    .course-line {
+        font-size: 12px
+    }
+
+    .welcome {
+        display: none
+    }
+}
+
+/* Menyamakan lebar wadah ikon agar teks di sebelahnya rata kiri di garis yang sama */
+.side-info > span:first-child,
+.profile .avatar-small {
+  width: 36px;          /* Sesuaikan dengan lebar lingkaran avatar Anda */
+  min-width: 36px;      /* Mencegah kotak menyusut */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Memastikan jarak antara ikon dan teks konsisten */
+.side-info,
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
