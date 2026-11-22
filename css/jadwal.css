@@ -1,248 +1,38 @@
-.top-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px
-}
+/* ===== Halaman Jadwal Perkuliahan ===== */
+.legend{background:#edf2ff;border-radius:12px;display:flex;align-items:center;gap:30px;flex-wrap:wrap;padding:12px 24px;color:#4a5667;font-size:14.5px;margin-bottom:16px}
+.legend span{display:flex;align-items:center;gap:9px}
+.dot{width:15px;height:15px;border-radius:5px;display:inline-block;border:1px solid #c9d8f2}
+.dot-class{background:#d8e6ff}
+.dot-presentation{background:var(--blue);border-color:var(--blue)}
+.dot-extra{background:#fff;border:2px solid var(--blue)}
+.dot-free{background:#fff}
 
-.student-card {
-    background: #fff;
-    border-radius: 14px;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 1px 2px #182a4510;
-    margin-bottom: 24px
-}
+.calendar-wrap{overflow-x:auto;border-radius:14px;background:#fff;box-shadow:0 1px 2px #182a4510}
+.calendar-grid{min-width:900px;display:grid;grid-template-columns:100px repeat(5,minmax(150px,1fr));grid-template-rows:88px repeat(7,minmax(128px,auto));border:1px solid #edf0f6}
+.calendar-head{background:#eaf0ff;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:17px;border-right:1px solid #e4e9f2}
+.calendar-head small{font-size:13px;font-weight:500;margin-top:5px;color:#586579}
+.calendar-head.today{background:#d9efff;color:#0078aa}
+.calendar-head.today small{color:#0078aa;font-weight:600}
+.time-head{background:#e2ebff}
+.time-label{background:#f0f3fa;display:flex;justify-content:center;padding-top:14px;color:#6b7687;font-size:14px;font-weight:600;border-top:1px solid #e9edf4}
 
-.avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: #e4f6ff;
-    color: var(--blue);
-    display: grid;
-    place-items: center;
-    font-size: 28px
-}
+.calendar-cell{display:flex;flex-direction:column;gap:3px;background:#fff;border-left:1px solid #edf0f6;border-top:1px solid #edf0f6;padding:4px;min-width:0}
+.event{flex:1;min-height:0;width:100%;border:0;border-radius:10px;text-align:left;padding:11px 12px;background:#eaf0fc;color:#1b2b42;display:flex;flex-direction:column;gap:5px;overflow:hidden}
+.event:hover{filter:brightness(.97)}
+.event small{font-size:11px;letter-spacing:.02em;color:#0089c5;font-weight:700}
+.event b{font-size:16px;line-height:1.3}
+.event span{font-size:13.5px;color:#4d5a6a}
 
-.student-card h3 {
-    font-size: 16px;
-    margin: 0 0 5px
-}
+.presentation-event{background:var(--blue);color:#fff;gap:7px}
+.event-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.event-badge{background:#fff;color:var(--blue-dark)!important;border-radius:14px;padding:3px 9px;font-size:11px!important;font-weight:700;letter-spacing:.02em}
+.event-time{font-size:13px!important;font-weight:600;color:#fff!important}
+.event-title{font-size:16px;line-height:1.3}
+.event-place{font-size:13px!important;color:#e6f6ff!important}
 
-.student-card p {
-    margin: 0;
-    color: var(--muted)
-}
+.extra-event{background:#fff;border:2px solid var(--blue);padding:9px 10px}
+.extra-event b{font-size:15px}
 
-.status-pill {
-    font-size: 10px;
-    background: #e2efff;
-    color: #0076ae;
-    border-radius: 20px;
-    padding: 4px 8px;
-    vertical-align: middle
-}
-
-.legend {
-    height: 38px;
-    background: #edf2ff;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    padding: 0 22px;
-    color: #657080;
-    font-size: 12px;
-    margin-bottom: 16px
-}
-
-.legend span {
-    display: flex;
-    align-items: center;
-    gap: 8px
-}
-
-.dot {
-    width: 13px;
-    height: 13px;
-    border-radius: 4px;
-    display: inline-block
-}
-
-.dot-class {
-    background: #d8e6ff
-}
-
-.dot-presentation {
-    background: var(--blue)
-}
-
-.dot-free {
-    background: #fff
-}
-
-.calendar-wrap {
-    overflow-x: auto;
-    border-radius: 12px;
-    background: #fff
-}
-
-.calendar-grid {
-    min-width: 820px;
-    display: grid;
-    grid-template-columns: 110px repeat(5, minmax(125px, 1fr));
-    grid-template-rows: 82px repeat(6, 112px);
-    border: 1px solid #edf0f6
-}
-
-.calendar-head {
-    background: #eaf0ff;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 15px;
-    border-right: 1px solid #e4e9f2
-}
-
-.calendar-head small {
-    font-size: 11px;
-    font-weight: 400;
-    margin-top: 6px;
-    color: #586579
-}
-
-.calendar-head.today {
-    background: #d9efff;
-    color: #0078aa
-}
-
-.calendar-head.today small {
-    color: #0078aa
-}
-
-.time-head {
-    background: #e2ebff
-}
-
-.time-label {
-    background: #f0f3fa;
-    display: flex;
-    justify-content: center;
-    padding-top: 12px;
-    color: #758091;
-    font-size: 12px;
-    border-top: 1px solid #e9edf4
-}
-
-.calendar-cell {
-    position: relative;
-    background: #fff;
-    border-left: 1px solid #edf0f6;
-    border-top: 1px solid #edf0f6;
-    padding: 3px;
-    min-width: 0
-}
-
-.event {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 8px;
-    text-align: left;
-    padding: 9px;
-    background: #eaf0fc;
-    color: #1b2b42;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    overflow: hidden
-}
-
-.event small {
-    font-size: 9px;
-    color: #0089c5;
-    font-weight: 700
-}
-
-.event b {
-    font-size: 14px;
-    line-height: 1.35
-}
-
-.event span {
-    font-size: 11px;
-    color: #4d5a6a
-}
-
-.presentation-event {
-    background: #08a8e8;
-    color: #fff;
-    padding: 8px
-}
-
-.presentation-event small {
-    background: #fff;
-    color: #0076ae;
-    border-radius: 15px;
-    padding: 4px 7px;
-    display: flex;
-    justify-content: space-between
-}
-
-.presentation-event strong {
-    font-size: 14px;
-    line-height: 1.35
-}
-
-.presentation-event span {
-    color: #fff
-}
-
-.presentation-event.compact {
-    height: 55%;
-    align-self: start
-}
-
-.presentation-event.compact small {
-    display: inline-block;
-    width: max-content
-}
-
-.presentation-event.compact strong {
-    color: white
-}
-
-#modalBody {
-    line-height: 1.8;
-    color: #4c5868
-}
-
-#modalBody strong {
-    color: #14243b
-}
-
-@media(max-width:800px) {
-    .student-card {
-        padding: 16px
-    }
-
-    .legend {
-        overflow-x: auto;
-        white-space: nowrap
-    }
-
-    .top-actions {
-        gap: 6px
-    }
-
-    .top-actions .primary-btn {
-        padding: 9px;
-        font-size: 12px
-    }
-}
-
+#modalBody{line-height:1.8;color:#4c5868}
+#modalBody strong{color:var(--ink)}
+.modal-note{margin-top:10px;padding:10px 14px;background:#f2f8ff;border-radius:10px;font-size:14px;line-height:1.5;color:#3e5470}
