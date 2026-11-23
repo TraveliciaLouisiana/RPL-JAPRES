@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAPRES | Import Data</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="../js/global.js" defer></script>
+    <script src="../js/admin-data.js" defer></script>
+    <script src="../js/admin-import.js" defer></script>
+</head>
+
+<body data-page="admin-import">
+    <aside class="sidebar">
+        <a class="brand" href="admin-dashboard.html"><span class="brand-icon"><i
+                    class="fa-solid fa-calendar"></i></span> JAPRES</a>
+        <nav class="nav-menu">
+            <a class="nav-link" href="admin-dashboard.html"><span><i class="fa-solid fa-house"></i></span> Dashboard</a>
+            <a class="nav-link active" href="admin-import.html"><span><i class="fa-solid fa-file-import"></i></span>
+                Input Data</a>
+            <a class="nav-link" href="admin-master.html"><span><i class="fa-solid fa-database"></i></span> Data
+                Master</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="profile"><span class="avatar-small"><i class="fa-solid fa-user"></i></span>
+                <div><strong>Admin</strong><small>Administrator</small></div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                Informatika
+                UNPAR • Tahun Akademik 2026/2027</div>
+            <div class="top-actions"><span class="welcome">Selamat Datang, Admin</span></div>
+        </header>
+
+        <h1 class="page-title">Import Data</h1>
+
+        <nav class="tabs">
+            <button class="tab active" type="button" data-type="mahasiswa">Mahasiswa</button>
+            <button class="tab" type="button" data-type="dosen">Dosen</button>
+            <button class="tab" type="button" data-type="matakuliah">Mata Kuliah</button>
+            <button class="tab" type="button" data-type="jadwalUjian">Jadwal Ujian</button>
+            <button class="tab" type="button" data-type="jadwalKuliah">Jadwal Kuliah</button>
+        </nav>
+
+        <section class="panel">
+            <p class="hint" id="kolomHint"></p>
+            <div class="dropzone" id="dropzone">
+                <i class="fa-solid fa-file-arrow-down dropzone-icon"></i>
+                <p>Pilih file excel atau tarik file ke sini</p>
+                <button class="primary-btn" id="pilihFileBtn" type="bitton">Pilih File</button>
+                <span class="file-name" id="fileName">Belum ada file dipilih</span>
+                <input type="file" id="fileInput" accept=".xlsx" hidden>
+            </div>
+            <div class="import-footer">
+                <button class="soft-btn" id="templateBtn" type="button"><i class="fa-solid fa-download"></i> Unduh
+                    Template</button>
+                <button class="primary-btn" id="importBtn" type="button" disabled>Import File<i
+                        class="fa-solid fa-chevron right"></i></button>
+            </div>
+        </section>
+
+        <section class="panel hidden" id="resultPanel"></section>
+    </main>
+
+    <div class="toast hidden" id="toast"></div>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAPRES | Dashboard Admin</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="../js/global.js" defer                                                                ></script>
+    <script src="../js/admin-data.js" defer></script>
+    <script src="../js/admin-dashboard.js" defer></script>
+</head>
+
+<body data-page="admin-dashboard">
+    <aside class="sidebar">
+        <a class="brand" href="admin-dashboard.html"><span class="brand-icon"><i
+                    class="fa-solid fa-calendar"></i></span> JAPRES</a>
+        <nav class="nav-menu">
+            <a class="nav-link active" href="admin-dashboard.html"><span><i class="fa-solid fa-house"></i></span>
+                Dashboard</a>
+            <a class="nav-link" href="admin-import.html"><span><i class="fa-solid fa-file-import"></i></span> Input
+                Data</a>
+            <a class="nav-link" href="admin-master.html"><span><i class="fa-solid fa-database"></i></span> Data
+                Master</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="profile"><span class="avatar-small"><i class="fa-solid fa-user"></i></span>
+                <div><strong>Admin</strong><small>Administrator</small></div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                Informatika
+                UNPAR • 2026/2027</div>
+            <div class="top-actions"><span class="welcome">Halo, Admin</span></div>
+        </header>
+
+        <h1 class="page-title">Halo, Admin</h1>
+
+        <section class="stat-grid">
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fa-solid fa-user-group"></i></span>
+                <span class="stat-label">Mahasiswa</span>
+                <strong id="countMahasiswa">0</strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fa-solid fa-user-tie"></i></span>
+                <span class="stat-label">Dosen</span>
+                <strong id="countDosen">0</strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fa-solid fa-book"></i></span>
+                <span class="stat-label">Mata Kuliah</span>
+                <strong id="countMataKuliah">0</strong>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon"><i class="fa-regular fa-calendar-days"></i></span>
+                <span class="stat-label">Data Jadwal</span>
+                <strong id="countJadwal">0</strong>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Riwayat Import</h2>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Jenis Data</th>
+                            <th>Tanggal Import</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="importLogBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast hidden" id="toast"></div>
+</body>
+
+</html>
