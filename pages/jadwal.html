@@ -44,11 +44,13 @@
     <!-- Info jadwal presentasi: terisi otomatis (sudah ditetapkan / belum tersedia / belum bergabung) -->
     <section class="info-bar" id="scheduleInfo"></section>
 
-    <section class="legend">
-      <span><i class="dot dot-class"></i> Kuliah Pribadi</span>
-      <span><i class="dot dot-presentation"></i> Jadwal Presentasi Kelompok</span>
-      <span><i class="dot dot-extra"></i> Kegiatan Tambahan</span>
-      <span><i class="dot dot-free"></i> Slot Kosong</span>
+    <!-- Legenda sekaligus filter: centang jenis jadwal yang ingin ditampilkan -->
+    <section class="legend" id="filters" aria-label="Filter kalender">
+      <label class="filter-chip"><input type="checkbox" data-filter="class" checked><i class="dot dot-class"></i><span>Kuliah Pribadi</span></label>
+      <label class="filter-chip"><input type="checkbox" data-filter="presentation" checked><i class="dot dot-presentation"></i><span>Jadwal Presentasi Kelompok</span></label>
+      <label class="filter-chip"><input type="checkbox" data-filter="extra" checked><i class="dot dot-extra"></i><span>Kegiatan Tambahan</span></label>
+      <label class="filter-chip"><input type="checkbox" data-filter="free" checked><i class="dot dot-free"></i><span>Slot Kosong</span></label>
+      <button class="link-btn hidden" id="resetFilter" type="button">Tampilkan semua</button>
     </section>
 
     <section class="calendar-wrap">

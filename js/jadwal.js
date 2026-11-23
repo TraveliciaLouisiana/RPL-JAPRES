@@ -1,3 +1,4 @@
+const FILTER = { class: true, presentation: true, extra: true, free: true };   // jenis jadwal yang sedang ditampilkan
 const DAYS = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
 const ROW_STARTS = [7, 8, 10, 12, 13, 15, 17].map(h => h * 60);   // jam mulai tiap baris kalender
 const toMin = t => { const m = /(\d{1,2})[.:](\d{2})/.exec(t || ""); return m ? +m[1] * 60 + +m[2] : null; };
@@ -31,6 +32,18 @@ function addExtra(ev) {
   bindCard(card); cell.appendChild(card); return true;
 }
 
+// Menerapkan filter: sembunyikan jenis jadwal yang tidak dicentang, tandai sel kosong bila "Slot Kosong" dicentang
+function applyFilter() {
+  const toggle = (sel, on) => document.querySelectorAll(sel).forEach(e => e.classList.toggle("hidden", !on));
+  toggle(".class-event", FILTER.class); toggle(".presentation-event", FILTER.presentation); toggle(".extra-event", FILTER.extra);
+  document.querySelectorAll(".calendar-head[data-day]").forEach(h => {          // sorotan "Hari Presentasi" ikut filter
+    h.classList.toggle("today", FILTER.presentation && !!h.querySelector(".head-note"));
+    h.querySelector(".head-note")?.classList.toggle("hidden", !FILTER.presentation);
+  });
+  document.querySelectorAll("#calendarGrid .calendar-cell").forEach(c => c.classList.toggle("free", FILTER.free && !c.querySelector(".event")));
+  document.getElementById("resetFilter").classList.toggle("hidden", Object.values(FILTER).every(Boolean));
+}
+
 // Menampilkan jadwal presentasi kelompok + bar informasinya (sudah / belum ditetapkan).
 function renderPresentation() {
   document.querySelectorAll(".presentation-event").forEach(e => e.remove());
@@ -60,9 +73,16 @@ function renderPresentation() {
     const head = document.querySelector(`.calendar-head[data-day="${s.day}"]`);
     if (head) { head.classList.add("today"); head.insertAdjacentHTML("beforeend", `<small class="head-note">Hari Presentasi</small>`); }
   }
+  applyFilter();
 }
 
+const syncChips = () => document.querySelectorAll("#filters .filter-chip").forEach(l => l.classList.toggle("off", !l.querySelector("input").checked));
+
 document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("#filters input").forEach(i => i.addEventListener("change", () => { FILTER[i.dataset.filter] = i.checked; syncChips(); applyFilter(); }));
+  document.getElementById("resetFilter").addEventListener("click", () => {
+    Object.keys(FILTER).forEach(k => FILTER[k] = true); document.querySelectorAll("#filters input").forEach(i => i.checked = true); syncChips(); applyFilter();
+  });
   document.querySelectorAll(".class-event").forEach(bindCard);
   store.get("jp_events", []).forEach(addExtra);
   renderPresentation();
@@ -74,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const f = Object.fromEntries(new FormData(e.target)), ev = { title: f.title.trim(), day: f.day, time: f.time.trim(), note: f.note.trim() };
     if (!addExtra(ev)) return showToast("Format waktu tidak valid. Contoh: 10:30–11:00");
     store.set("jp_events", [...store.get("jp_events", []), ev]);
+    FILTER.extra = true; document.querySelector('[data-filter="extra"]').checked = true; syncChips(); applyFilter();   // kegiatan baru langsung terlihat
     closeModal("newScheduleModal"); e.target.reset(); showToast("Kegiatan ditambahkan ke kalender");
   });
 });

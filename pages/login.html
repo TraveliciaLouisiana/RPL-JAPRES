@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login JAPRES</title>
+        <link rel="stylesheet" href="../css/login.css">
+        <script src="../js/login.js" defer></script>
+    </head>
+
+    <body>
+        <main class="container">
+            <section class="loginBox">
+                <header class="loginHeader">
+                    <div class="logoBG">
+                        <img src="../images/academic-cap.png" class="logo" alt="Logo">
+                    </div>
+
+                    <h1>JAPRES</h1>
+                    <p class="namaJapres">Sistem Penjadwalan Presentasi</p>
+                </header>
+
+                <form id="loginForm">
+                    <div class="formField">
+                        <label for="email">Email Universitas</label>
+                        <div class="inputBox">
+                            <img src="../images/email.png" alt="">
+                            <input type="email" id="email" name="email" placeholder="UNPAR Account" required>
+                        </div>
+                    </div>
+
+                    <div class="formField">
+                        <div class="fieldPass">
+                            <label for="password">Kata Sandi</label>
+                            <a href="#" class="forgotPassword">
+                                Lupa kata sandi?
+                            </a>
+                        </div>
+                        <div class="inputBox">
+                            <img src="../images/padlock.png" alt="">
+                            <input type="password" id="password" name="password" placeholder="Masukkan kata sandi" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submitButton">
+                        Masuk ke JAPRES
+                    </button>
+                </form>
+                
+                <p class="footer">
+                    Portal Resmi Akses Dosen &amp; Mahasiswa
+                </p>
+            </section>
+        </main>
+    </body>
+</html>
