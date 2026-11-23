@@ -228,3 +228,20 @@
         display: none
     }
 }
+/* ===== Halaman Informasi Kelompok (selebihnya memakai global.css) ===== */
+.avatar.num{font-size:24px}
+.group-list{display:grid;gap:12px}
+.group-row{display:grid;grid-template-columns:1.3fr .9fr 1.4fr 170px;align-items:center;gap:20px;border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+.group-row.full{background:#f8f9fc}
+.g-name b{display:block;font-size:17px;margin-bottom:3px}
+.g-name small,.g-count small,.g-sched small{color:var(--muted);font-size:14px}
+.g-count b{display:block;font-size:16px}
+.g-count .ok{color:var(--ok)}
+.g-count .full{color:#6b7583}
+.g-sched b{display:block;font-size:15px;font-weight:600}
+.g-sched .none{color:var(--muted);font-weight:500}
+.join-btn{border:0;background:var(--blue);color:#fff;font-weight:700;font-size:15.5px;padding:13px 16px;border-radius:11px;width:100%;white-space:nowrap}
+.join-btn:hover{background:#008fc9}
+.g-end{min-height:1px}
+.empty{color:var(--muted);text-align:center;padding:10px}
+@media(max-width:1100px){.group-row{grid-template-columns:1fr 1fr;row-gap:12px}.g-end{grid-column:1/-1}}
