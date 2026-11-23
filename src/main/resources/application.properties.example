@@ -1,0 +1,5 @@
+spring.application.name=japres
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/japres
+spring.datasource.username=postgres
+spring.datasource.password=PASSWORD_POSTGRES_KAMU
