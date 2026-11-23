@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAPRES | Data Master</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="../js/global.js" defer></script>
+    <script src="../js/admin-data.js" defer></script>
+    <script src="../js/admin-master.js" defer></script>
+</head>
+
+<body data-page="admin-master">
+    <aside class="sidebar">
+        <a class="brand" href="admin-dasboard.html"><span class="brand-icon"><i class="fa-solid fa-calendar"></i></span> JAPRES</a>
+        <nav class="nav-menu">
+            <a class="nav-link" href="admin-dashboard.html"><span><i class="fa-solid fa-house"></i></span> Dashboard</a>
+            <a class="nav-link" href="admin-import.html"><span><i class="fa-solid fa-house"></i></span> Input Data</a>
+            <a class="nav-link active" href="admin-master.html"><span><i class="fa-solid fa-house"></i></span> Data Master</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="profile"><span class="avatar-small"><i class="fa-solid fa-user"></i></span>
+                <div><strong>Admin</strong><small>Administrator</small></div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span> Informatika 
+            UNPAR • Tahun Akademik 2026/2027</div>
+            <div class="top-actions"><span class="welcome">Selamat Datang, Admin</span></div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-active" type="button" data-type="mahasiswa">Mahasiswa</button>
+            <button class="tab" type="button" data-type="dosen">Dosen</button>
+            <button class="tab" type="button" data-type="matakuliah">Mata Kuliah</button>
+            <button class="tab" type="button" data-type="jadwalUjian">Jadwal Ujian</button>
+            <button class="tab" type="button" data-type="jadwalKuliah">Jadwal Kuliah</button>
+        </nav>
+
+        <section class="panel">
+            <h2 id="masterTitle">Data Mahasiswa</h2>
+            <div class="search-row">
+                <input class="search-input" id="searchInput" type="text" placeholder="Cari data">
+                <button class="primary-btn" id="addBtn" type="button">+ Tambah Data</button>
+            </div>
+            <div class="table-wrap">
+                <table class="data-table">
+                    <thead id="masterHead"></thead>
+                    <tbody id="masterBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="addModal">
+        <form class="modal form-modal" id="addForm">
+            <button type="button" class="modal-close" data-close="addModal">×</button>
+            <h2 id="addTitle">Tambah Data</h2>
+            <div class="form-fields" id="addFields"></div>
+            <button class="primary-btn" type="submit">Simpan Data</button>
+        </form>
+    </div>
+</body>
+
+</html>
