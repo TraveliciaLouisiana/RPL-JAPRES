@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <title>JAPRES | Daftar Kuliah</title>
+  <title>JAPRES | Informasi Kelompok</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,16 +9,18 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
   <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/kelompok.css">
+  <script src="../js/api.js" defer></script>
   <script src="../js/global.js" defer></script>
-  <script src="../js/daftarkuliah.js" defer></script>
+  <script src="../js/kelompok.js" defer></script>
 </head>
-<body data-page="daftarkuliah">
+<body data-page="kelompok">
   <aside class="sidebar">
     <a class="brand" href="jadwal.html"><span class="brand-icon"><i class="fa-solid fa-calendar"></i></span> JAPRES</a>
     <nav class="nav-menu">
       <a class="nav-link " href="jadwal.html"><span><i class="fa-regular fa-calendar-days"></i></span> Jadwal Perkuliahan</a>
-      <a class="nav-link active" href="daftarkuliah.html"><span><i class="fa-solid fa-book"></i></span> Daftar Kuliah</a>
-      <a class="nav-link " href="kelompok.html"><span><i class="fa-solid fa-users"></i></span> Informasi Kelompok</a>
+      <a class="nav-link " href="daftarkuliah.html"><span><i class="fa-solid fa-book"></i></span> Daftar Kuliah</a>
+      <a class="nav-link active" href="kelompok.html"><span><i class="fa-solid fa-users"></i></span> Informasi Kelompok</a>
     </nav>
     <div class="sidebar-bottom">
       <button class="logout-btn" data-action="logout">
@@ -31,6 +33,7 @@
     <header class="topbar">
       <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span><span id="courseText"></span></div>
       <div class="top-actions">
+        <button class="primary-btn" id="newGroupBtn"><i class="fa-solid fa-plus"></i> Buat Kelompok Baru</button>
         <button class="profile-btn" data-action="profile" aria-haspopup="dialog" title="Lihat profil">
           <span class="avatar-small"><i class="fa-solid fa-user"></i></span>
           <span class="who"><strong>Vivian Kimora</strong><small>Mahasiswa</small></span>
@@ -39,17 +42,16 @@
       </div>
     </header>
 
+    <section id="lockNotice"></section>
+    <section class="student-card" id="groupCard"></section>
+    <section class="info-bar" id="scheduleBar"></section>
+    <section class="panel" id="ownPanel"></section>
+
     <section class="panel">
       <div class="panel-top">
-        <div><h2>Daftar Kuliah</h2><p>Mata kuliah aktif semester berjalan yang memiliki tugas besar.</p></div>
+        <div><h2>Kelompok Lain</h2><p>Periksa kuota sebelum masuk. Setiap mahasiswa hanya boleh berada di satu kelompok per mata kuliah.</p></div>
       </div>
-      <p class="form-msg err hidden" id="loadError">Daftar mata kuliah tidak dapat dimuat. <button class="link-btn" id="retry">Coba Lagi</button></p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Kode</th><th>Mata Kuliah</th><th>SKS</th><th>Kelas</th></tr></thead>
-          <tbody id="courseRows"></tbody>
-        </table>
-      </div>
+      <div class="group-list" id="groupList"></div>
     </section>
   </main>
 </body>

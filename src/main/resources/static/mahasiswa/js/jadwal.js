@@ -1,5 +1,7 @@
 const FILTER = { class: true, presentation: true, extra: true, free: true };   // jenis jadwal yang sedang ditampilkan
 const DAYS = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat"];
+const BULAN_PENDEK = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+const BULAN_PANJANG = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 const ROW_STARTS = [7, 8, 10, 12, 13, 15, 17].map(h => h * 60);   // jam mulai tiap baris kalender
 const toMin = t => { const m = /(\d{1,2})[.:](\d{2})/.exec(t || ""); return m ? +m[1] * 60 + +m[2] : null; };
 
@@ -9,6 +11,20 @@ function cellFor(day, start) {
   if (d < 0 || mins === null) return null;
   let row = 0; ROW_STARTS.forEach((s, i) => { if (mins >= s) row = i; });
   return document.querySelectorAll("#calendarGrid .calendar-cell")[row * 5 + d] || null;
+}
+
+// Mengisi tanggal di header kalender (Senin–Jumat) untuk pekan yang memuat tanggal acuan (format "2026-12-16").
+function setWeekHeaders(iso) {
+  const ref = iso ? new Date(iso + "T00:00:00") : new Date();
+  const monday = new Date(ref); monday.setDate(ref.getDate() - ((ref.getDay() + 6) % 7));
+  const friday = new Date(monday); friday.setDate(monday.getDate() + 4);
+  DAYS.forEach((d, i) => {
+    const dt = new Date(monday); dt.setDate(monday.getDate() + i);
+    const small = document.querySelector(`.calendar-head[data-day="${d}"] small:not(.head-note)`);
+    if (small) small.textContent = `${dt.getDate()} ${BULAN_PANJANG[dt.getMonth()]}`;
+  });
+  const th = document.querySelector(".time-head small");
+  if (th) th.textContent = `${monday.getDate()}–${friday.getDate()} ${BULAN_PENDEK[friday.getMonth()]} ${friday.getFullYear()}`;
 }
 
 function showDetail(card) {
@@ -21,6 +37,20 @@ function showDetail(card) {
   openModal("scheduleModal");
 }
 const bindCard = card => card.addEventListener("click", () => showDetail(card));
+
+// Jadwal kuliah dari database (tabel jadwal_kuliah untuk kelas-kelas di FRS mahasiswa).
+function addClass(j) {
+  const cell = cellFor(j.hari, j.mulai); if (!cell) return false;
+  const card = document.createElement("button");
+  card.className = "event class-event";
+  card.innerHTML = `<small>JADWAL MATA KULIAH</small><b></b><span></span><small></small>`;
+  card.children[1].textContent = j.mataKuliah;
+  card.children[2].textContent = `Kelas ${j.kelas} · Ruang ${j.ruangan}`;
+  card.children[3].textContent = `${j.mulai}–${j.selesai} · ${j.dosen}`;
+  Object.assign(card.dataset, { title: j.mataKuliah, time: `${j.mulai}–${j.selesai}`, day: j.hari,
+    place: `Ruang ${j.ruangan}`, note: `Kelas ${j.kelas} · Dosen: ${j.dosen}` });
+  bindCard(card); cell.appendChild(card); return true;
+}
 
 function addExtra(ev) {
   const cell = cellFor(ev.day, ev.time); if (!cell) return false;
@@ -49,25 +79,26 @@ function renderPresentation() {
   document.querySelectorAll(".presentation-event").forEach(e => e.remove());
   document.querySelectorAll(".calendar-head[data-day]").forEach(h => { h.classList.remove("today"); h.querySelector(".head-note")?.remove(); });
   const c = getCourse(), g = getMyGroup(), s = g && g.schedule, info = document.getElementById("scheduleInfo");
+  setWeekHeaders(s ? s.iso : null);                // kalender menampilkan pekan presentasi (atau pekan ini bila belum ada)
 
   if (!g) {
     info.className = "info-bar warn";
     info.innerHTML = `<span>Anda belum bergabung dengan kelompok. Jadwal presentasi muncul setelah Dosen menetapkannya. <a href="kelompok.html">Buka Informasi Kelompok</a></span>`;
   } else if (!s) {
     info.className = "info-bar warn";
-    info.innerHTML = `<span><b>Jadwal presentasi belum tersedia.</b> Dosen belum menetapkan jadwal untuk Kelompok ${g.id}.</span>`;
+    info.innerHTML = `<span><b>Jadwal presentasi belum tersedia.</b> Dosen belum menetapkan jadwal untuk Kelompok ${esc(g.nomor)}.</span>`;
   } else {
     info.className = "info-bar notice";
-    info.innerHTML = [["Presentasi", `Kelompok ${g.id}`], ["Hari", s.day], ["Tanggal", s.date], ["Jam", `${s.start}–${s.end} WIB`], ["Ruangan", `${s.room} ${s.building}`]]
+    info.innerHTML = [["Presentasi", `Kelompok ${g.nomor}`], ["Hari", s.day], ["Tanggal", s.date], ["Jam", `${s.start}–${s.end} WIB`], ["Ruangan", s.room]]
       .map(x => `<div class="seg"><small>${x[0]}</small><b>${esc(x[1])}</b></div>`).join("");
     const cell = cellFor(s.day, s.start);
     if (cell) {
       const card = document.createElement("button");
       card.className = "event presentation-event";
-      card.innerHTML = `<div class="event-top"><span class="event-badge">PRESENTASI</span><span class="event-time">${s.start}–${s.end}</span></div>
-        <strong class="event-title">${c.short} Presentasi Kelompok ${g.id}</strong><span class="event-place">${esc(s.room)} · ${s.mode}</span>`;
-      Object.assign(card.dataset, { kind: "presentation", title: `${c.short} Presentasi Kelompok ${g.id}`, day: s.day, date: s.date,
-        time: `${s.start}–${s.end} WIB`, place: `${s.room} ${s.building}`, note: s.mode });
+      card.innerHTML = `<div class="event-top"><span class="event-badge">PRESENTASI</span><span class="event-time">${esc(s.start)}–${esc(s.end)}</span></div>
+        <strong class="event-title">${esc(c.short)} Presentasi Kelompok ${esc(g.nomor)}</strong><span class="event-place">Ruang ${esc(s.room)}</span>`;
+      Object.assign(card.dataset, { kind: "presentation", title: `${c.short} Presentasi Kelompok ${g.nomor}`, day: s.day, date: s.date,
+        time: `${s.start}–${s.end} WIB`, place: `Ruang ${s.room}`, note: "" });
       bindCard(card); cell.prepend(card);
     }
     const head = document.querySelector(`.calendar-head[data-day="${s.day}"]`);
@@ -78,23 +109,28 @@ function renderPresentation() {
 
 const syncChips = () => document.querySelectorAll("#filters .filter-chip").forEach(l => l.classList.toggle("off", !l.querySelector("input").checked));
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Filter & tombol-tombol tidak butuh data, jadi dipasang dulu.
   document.querySelectorAll("#filters input").forEach(i => i.addEventListener("change", () => { FILTER[i.dataset.filter] = i.checked; syncChips(); applyFilter(); }));
   document.getElementById("resetFilter").addEventListener("click", () => {
     Object.keys(FILTER).forEach(k => FILTER[k] = true); document.querySelectorAll("#filters input").forEach(i => i.checked = true); syncChips(); applyFilter();
   });
-  document.querySelectorAll(".class-event").forEach(bindCard);
-  store.get("jp_events", []).forEach(addExtra);
-  renderPresentation();
-  document.addEventListener("japres:change", renderPresentation);
-
   document.getElementById("newScheduleBtn").addEventListener("click", () => openModal("newScheduleModal"));
   document.getElementById("scheduleForm").addEventListener("submit", e => {
     e.preventDefault();
     const f = Object.fromEntries(new FormData(e.target)), ev = { title: f.title.trim(), day: f.day, time: f.time.trim(), note: f.note.trim() };
     if (!addExtra(ev)) return showToast("Format waktu tidak valid. Contoh: 10:30–11:00");
-    store.set("jp_events", [...store.get("jp_events", []), ev]);
+    store.set(userKey("jp_events"), [...store.get(userKey("jp_events"), []), ev]);
     FILTER.extra = true; document.querySelector('[data-filter="extra"]').checked = true; syncChips(); applyFilter();   // kegiatan baru langsung terlihat
     closeModal("newScheduleModal"); e.target.reset(); showToast("Kegiatan ditambahkan ke kalender");
   });
+
+  // Data dari database
+  if (!(await appReady)) return;
+  try {
+    (await api("/portal/jadwal-kuliah")).forEach(addClass);
+  } catch (e) { showToast(e.message); }
+  store.get(userKey("jp_events"), []).forEach(addExtra);      // kegiatan tambahan pribadi: masih disimpan di browser (belum ada tabelnya)
+  renderPresentation();
+  document.addEventListener("japres:change", renderPresentation);
 });
