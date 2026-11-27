@@ -1,0 +1,313 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0px;
+    font-family : Arial, sans-serif;
+    background-color: #EFF4FF;
+    color: #0B1C30;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #EFF4FF;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5%;
+    background-color: #EFF4FF;
+    border-bottom: 1px solid #EFF4FF;
+}
+
+.headerKiri {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.logo {
+    width: 18px;
+    height: 18px;
+}
+
+.headerKiri p {
+    font-size: 13px;
+    color: #50616B;
+}
+
+.namaUser {
+    background-color: #EFF4FF;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0B1C30;
+}
+
+.isiHalaman {
+    padding: 5px 5%;
+}
+
+.judulHalaman {
+    font-size: 36px;
+    color: #0B1C30;
+    margin-bottom: 25px;
+    margin-top: 0px;
+}
+
+.konten {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 6%;
+}
+
+.daftarMatkul {
+    width: 44%;
+}
+
+.bagianMatkul {
+    margin-bottom: 30px;
+}
+
+.judulBagian {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 20px;
+    margin-bottom: 12px;
+    margin-top: 0;
+}
+
+.nomor {
+    background-color: #006591;
+    color: #FFFFFF;
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.matkul {
+    background-color: #FFFFFF;
+    padding: 22px;
+    border: 1px solid #EFF4FF;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    /*cursor: pointer;*/
+}
+
+.infoMatkul {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+}
+
+.kodeMatkul {
+    background-color: #EFF4FF;
+    color: #006591;
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.sksMatkul {
+    color: #6E7881;
+    font-size: 12px;
+}
+
+.namaMatkul {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.namaMatkul p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.namaMatkul:hover {
+    color: #0EA5E9;
+}
+
+.pilihanKelas {
+    display: none;
+    margin: 10px -20px 0px -20px;
+    border-top: 1px solid #0EA5E9;
+}
+
+.pilihanKelas p {
+    margin: 0;
+    padding: 7px 12px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.pilihanKelas p:hover {
+    background-color: #EFF4FF;
+    color: #006591;
+}
+
+.pilihanKelas p.terpilih {
+    background-color: #EFF4FF;
+    color: #006591;
+    font-weight: bold;
+}
+
+.kelasTerpilih {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #006591;
+}
+
+.ringkasan {
+    width: 49%;
+    margin-top: 37px;
+    background-color: #FFFFFF;
+    padding: 24px;
+    border: 1px solid #EFF4FF;
+    border-radius: 12px;
+}
+
+.ringkasan h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+.total {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.kotakTotal {
+    width: 50%;
+    background-color: #EFF4FF;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.kotakTotal p {
+    margin: 0 0 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #6E7881;
+}
+
+.kotakTotal h3 {
+    margin: 0;
+    font-size: 24px;
+    color: #0B1C30;
+}
+
+#totalSKS {
+    color: #006591;
+}
+
+.judulPilihan {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.daftarPilihan {
+    padding: 10px;
+    margin: 5px 0;
+    /* background-color: #EFF4FF;
+    border-radius: 8px;
+    font-size: 13px; */
+    background-color: trasparent;
+}
+
+#belumAdaPilihan {
+    color: #6E7881;
+    font-style: italic;
+}
+
+.submitButton {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    background-color: #0EA5E9;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: #006591;
+}
+
+.itemPilihan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #EFF4FF;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.itemPilihan p {
+    margin: 0;
+}
+
+.itemPilihan div {
+    flex: 1;
+}
+
+.itemPilihan p:first-child {
+    font-weight: bold;
+    color: #0B1C30;
+}
+
+.itemPilihan p:last-child {
+    color: #006591;
+}
+
+.itePilihan span {
+    width: 55px;
+    flex-shrink: 0;
+    text-align: center;
+    color: #6E7881;
+    font-size: 12px;
+}
+
+.itemPilihan button {
+    flex-shrink: 0;
+    background-color: #FFFFFF;
+    color: #006591;
+    border: 1px solid #006591;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.itemPilihan button:hover {
+    background-color: #006591;
+    color: #FFFFFF;
+}
+
+/*
+#6E7881
+#FFFFFF
+#0EA5E9
+#3E4850
+#0B1C30
+#EFF4FF
+#50616B
+#006591
+*/

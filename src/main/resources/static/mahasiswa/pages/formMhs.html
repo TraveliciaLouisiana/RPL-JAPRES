@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form Pemilihan Kelas Mahasiswa</title>
+        <link rel="stylesheet" href="../css/formMhs.css">
+        <script src="../js/formMhs.js" defer></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <header class="header">
+                <div class="headerKiri">
+                    <img src="../images/academic-cap.png" class="logo" alt="Logo">
+                    <p>Informatika UNPAR • Tahun Akademik 2026/2027</p>
+                </div>
+
+                <div class="namaUser">
+                    Selamat datang, <span id="namaUser">Vivian Kimora</span>
+                </div>
+            </header>
+
+            <main class="isiHalaman">
+                <h1 class="judulHalaman">Pilih Kelas Perkuliahan Semester Ini</h1>
+
+                <div class="konten">
+                    <div class="daftarMatkul">
+                        <section class="bagianMatkul">
+                            <h2 class="judulBagian">
+                                <span class="nomor">01</span>
+                                Mata Kuliah Wajib
+                            </h2>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233105</span>
+                                    <span class="sksMatkul">4 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Artificial Intelligence</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                    <p onclick="pilihKelas(this)">Kelas C</p>
+                                </div>   
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233201</span>
+                                    <span class="sksMatkul">3 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Pemograman Berbasis Web</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                </div>
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233301</span>
+                                    <span class="sksMatkul">2 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Manajemen Proyek</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                </div>
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233101</span>
+                                    <span class="sksMatkul">4 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Rekayasa Perangkat Lunak</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                    <p onclick="pilihKelas(this)">Kelas C</p>
+                                </div>
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233107</span>
+                                    <span class="sksMatkul">2 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Desain Antarmuka Grafis</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                    <p onclick="pilihKelas(this)">Kelas C</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="bagianMatkul">
+                            <h2 class="judulBagian">
+                                <span class="nomor">02</span>
+                                Mata Kuliah Pilihan
+                            </h2>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233405</span>
+                                    <span class="sksMatkul">3 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Sertifikasi Dasar Google Cloud Computing</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                </div>   
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">AIF233401</span>
+                                    <span class="sksMatkul">3 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Pemograman Python untuk Data Science</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                </div>   
+                            </div>
+                        </section>
+
+                        <section class="bagianMatkul">
+                            <h2 class="judulBagian">
+                                <span class="nomor">03</span>
+                                Mata Kuliah Umum
+                            </h2>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">MKU230120</span>
+                                    <span class="sksMatkul">2 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Bahasa Indonesia</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                    <p onclick="pilihKelas(this)">Kelas C</p>
+                                    <p onclick="pilihKelas(this)">Kelas D</p>
+                                    <p onclick="pilihKelas(this)">Kelas E</p>
+                                    <p onclick="pilihKelas(this)">Kelas F</p>
+                                </div>   
+                            </div>
+
+                            <div class="matkul">
+                                <div class="infoMatkul">
+                                    <span class="kodeMatkul">MKU230130</span>
+                                    <span class="sksMatkul">2 SKS</span>
+                                </div>
+
+                                <div class="namaMatkul" onclick="bukaKelas(this)">
+                                    <p>Logika</p>
+                                </div>
+
+                                 <div class="pilihanKelas">
+                                    <p onclick="pilihKelas(this)">Kelas A</p>
+                                    <p onclick="pilihKelas(this)">Kelas B</p>
+                                    <p onclick="pilihKelas(this)">Kelas C</p>
+                                    <p onclick="pilihKelas(this)">Kelas D</p>
+                                    <p onclick="pilihKelas(this)">Kelas E</p>
+                                    <p onclick="pilihKelas(this)">Kelas F</p>   
+                                </div>   
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="ringkasan">
+                        <h2>Ringkasan Mata Kuliah</h2>
+
+                        <div class="total">
+                            <div class="kotakTotal">
+                                <p>Total SKS</p>
+                                <h3 id="totalSKS">0</h3>
+                            </div>
+
+                            <div class="kotakTotal">
+                                <p>Total Mata Kuliah</p>
+                                <h3 id="totalMatkul">0</h3>
+                            </div>
+                        </div>
+
+                        <h3 class="judulPilihan">Kelas yang Dipilih</h3>
+
+                        <div class="daftarPilihan" id="daftarPilihan">
+                            <p id="belumAdaPilihan">Belum ada kelas yang dipilih</p>  
+                        </div>  
+
+                        <button type="button" class="submitButton" onclick="submitPilihan()">
+                            Simpan &amp; Lanjutkan ke Dasbor
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </body>
+</html>
