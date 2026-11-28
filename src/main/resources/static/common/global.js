@@ -1,5 +1,5 @@
 /* ===== JAPRES: data & fungsi bersama (terhubung ke database lewat API) ===== */
-const LOGIN_URL = "login.html";          // halaman login (satu folder dengan halaman lain)
+const LOGIN_URL = "/login/login.html";          // halaman login (satu folder dengan halaman lain)
 const SESSION_MS = 30 * 60 * 1000;       // sesi berakhir setelah 30 menit tanpa aktivitas
 
 // Data ini TIDAK lagi ditulis manual; semuanya diisi dari database oleh initApp() / loadGroups().
@@ -11,8 +11,8 @@ let appReady = null;     // Promise<boolean>; halaman menunggu ini sebelum mengg
 /* ----- Penyimpanan sederhana (localStorage) — hanya untuk preferensi tampilan ----- */
 const store = {
   get(k, d = null) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
-  del(k) { try { localStorage.removeItem(k); } catch {} }
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { } },
+  del(k) { try { localStorage.removeItem(k); } catch { } }
 };
 
 // Preferensi tampilan disimpan per NPM, supaya akun lain di browser yang sama tidak mewarisi pilihan akun sebelumnya.
@@ -29,10 +29,14 @@ async function initApp() {
     const me = await api("/auth/me");                                   // cek sesi login di server
     if (me.role !== "mahasiswa") { location.href = LOGIN_URL; return false; }
     const [profil, mk] = await Promise.all([api("/portal/profil"), api("/portal/mata-kuliah")]);
-    COURSES = mk.map(m => ({ short: m.singkatan, kode: m.kode, name: m.nama, sks: m.sks, kelas: m.kelas,
-      semester: m.semester, idTugasBesar: m.idTugasBesar, kuota: m.kuota, durasi: m.durasi }));
-    STUDENT = { name: profil.nama, npm: profil.npm, email: profil.email, prodi: profil.prodi, angkatan: profil.angkatan,
-      status: profil.status, tahun: ((COURSES[0] && COURSES[0].semester) || "").replace(/^\S+\s*/, "") || "-" };
+    COURSES = mk.map(m => ({
+      short: m.singkatan, kode: m.kode, name: m.nama, sks: m.sks, kelas: m.kelas,
+      semester: m.semester, idTugasBesar: m.idTugasBesar, kuota: m.kuota, durasi: m.durasi
+    }));
+    STUDENT = {
+      name: profil.nama, npm: profil.npm, email: profil.email, prodi: profil.prodi, angkatan: profil.angkatan,
+      status: profil.status, tahun: ((COURSES[0] && COURSES[0].semester) || "").replace(/^\S+\s*/, "") || "-"
+    };
     await loadGroups();
     return true;
   } catch (e) {
@@ -62,8 +66,10 @@ const getCourse = () => COURSES.find(c => c.short === store.get(userKey("jp_cour
 // Mengubah bentuk data API menjadi bentuk yang dipakai tampilan (id = id_kelompok, nomor = "1", "2", ...).
 const toGroup = k => ({
   id: k.id, nomor: k.nomor,
-  schedule: k.jadwal ? { day: k.jadwal.hari, date: k.jadwal.tanggal, iso: k.jadwal.tanggalIso,
-    start: k.jadwal.mulai, end: k.jadwal.selesai, room: k.jadwal.ruangan } : null,
+  schedule: k.jadwal ? {
+    day: k.jadwal.hari, date: k.jadwal.tanggal, iso: k.jadwal.tanggalIso,
+    start: k.jadwal.mulai, end: k.jadwal.selesai, room: k.jadwal.ruangan
+  } : null,
   members: k.anggota.map(a => ({ name: a.nama, npm: a.npm, me: a.npm === STUDENT.npm }))
 });
 const allGroups = () => (GROUP_DATA ? GROUP_DATA.kelompok.map(toGroup) : []);
@@ -71,19 +77,16 @@ const getMyGroupId = () => (GROUP_DATA && GROUP_DATA.idKelompokSaya) || null;
 const getMyGroup = () => allGroups().find(g => g.id === getMyGroupId()) || null;
 const membersOf = g => g.members;
 
-async function joinGroup(id) {
-  await api(`/portal/kelompok/${encodeURIComponent(id)}/gabung`, { method: "POST" });
+// Tombol "Simpan": masuk ke kelompok yang dipilih (bila sudah di kelompok lain, otomatis pindah). Ditolak server bila sudah dikunci / penuh.
+async function saveGroup(id) {
+  await api(`/portal/kelompok/${encodeURIComponent(id)}/simpan`, { method: "PUT" });
   await loadGroups();
 }
 async function leaveGroup() {
   await api(`/portal/kelompok/${encodeURIComponent(getMyGroupId())}/anggota-saya`, { method: "DELETE" });
   await loadGroups();
 }
-async function createGroup() {
-  const r = await api("/portal/kelompok", { method: "POST", body: { kodeMk: getCourse().kode } });
-  await loadGroups();
-  return r.nomor;
-}
+// (createGroup dihapus: kelompok sekarang dibuat oleh Dosen, bukan mahasiswa)
 
 const fmtSchedule = s => `${s.day}, ${s.date} · ${s.start}–${s.end} WIB`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -113,13 +116,21 @@ function profileView(msg = "") {
   const c = getCourse(), g = getMyGroup();
   // "l" = kolom kiri pasangan, "f" = satu baris penuh
   const rows = [["NPM", STUDENT.npm, "l"], ["Angkatan", STUDENT.angkatan, ""], ["Email", STUDENT.email, "f"],
-    ["Program Studi", STUDENT.prodi, "l"], ["Tahun Akademik", STUDENT.tahun, ""], ["Mata Kuliah", `${c.name} (${c.short})`, "f"],
-    ["Kelas", c.kelas, "l"], ["Kelompok", g ? `Kelompok ${g.nomor}` : "Belum bergabung", ""],
-    ["Jadwal Presentasi", g ? (g.schedule ? `${fmtSchedule(g.schedule)}, Ruang ${g.schedule.room}` : "Belum ditetapkan Dosen") : "-", "f"]];
+  ["Program Studi", STUDENT.prodi, "l"], ["Tahun Akademik", STUDENT.tahun, ""], ["Mata Kuliah", `${c.name} (${c.short})`, "f"],
+  ["Kelas", c.kelas, "l"], ["Kelompok", g ? `Kelompok ${g.nomor}` : "Belum bergabung", ""]];
+  const s = g && g.schedule;
+  if (!g || !s) {
+    rows.push(["Jadwal Presentasi", g ? "Belum ditetapkan Dosen" : "-", "f"]);   // belum ada jadwal: tetap 1 baris
+  } else {
+    rows.push(["Jadwal Presentasi", "", "sec"]);                 // judul bagian
+    rows.push(["Hari", `${s.day}, ${s.date}`, "f"]);             // contoh: Rabu, 25 November 2026
+    rows.push(["Jam", `${s.start}-${s.end} WIB`, "f"]);          // contoh: 09.00–09.30 WIB
+    rows.push(["Ruangan", `${s.room}`, "f"]);      // contoh: Lab. 09.00.0017 Semi Basement Gd.9
+  }
   return `<button class="modal-close" data-close="profileModal" aria-label="Tutup">×</button>
     <div class="pf-head"><span class="pf-ava">${esc(initials(STUDENT.name))}</span><div><h2>${esc(STUDENT.name)}</h2><span class="status-pill">${esc(STUDENT.status)}</span></div></div>
     ${msg ? `<p class="form-msg ok">${esc(msg)}</p>` : ""}
-    <div class="info-grid">${rows.map(r => `<div class="${r[2] === "f" ? "full" : r[2] === "l" ? "l" : ""}"><small>${r[0]}</small><b>${esc(r[1])}</b></div>`).join("")}</div>
+    <div class="info-grid">${rows.map(r => r[2] === "sec" ? `<div class="full sec">${r[0]}</div>` : `<div class="${r[2] === "f" ? "full" : r[2] === "l" ? "l" : ""}"><small>${r[0]}</small><b>${esc(r[1])}</b></div>`).join("")}</div>
     <div class="modal-actions"><button class="soft-btn" id="pfEdit">Ganti Mata Kuliah</button><button class="primary-btn" data-close="profileModal">Tutup</button></div>`;
 }
 function profileForm(err = "") {
@@ -165,7 +176,7 @@ function checkSession() {
 }
 async function logout() {
   store.del("jp_last");
-  try { await api("/auth/logout", { method: "POST" }); } catch {}      // hapus sesi di server
+  try { await api("/auth/logout", { method: "POST" }); } catch { }      // hapus sesi di server
   location.href = LOGIN_URL;
 }
 
@@ -175,7 +186,61 @@ function refreshShell() {
   if (el) el.textContent = `Informatika UNPAR • Tahun Akademik ${STUDENT.tahun} • ${c.short} • Kelas ${c.kelas}`;
 }
 
+
+/* Mengatur sidebar agar dapat ditutup dan dibuka*/
+function setupSidebarToggle() {
+  const sidebar = document.querySelector(".sidebar");
+  // Jika halaman tidak mempunyai sidebar, hentikan fungsi
+  if (!sidebar) return;
+  // Membuat tombol toggle secara otomatis
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  toggle.className = "sidebar-toggle";
+  toggle.setAttribute("aria-label", "Tutup sidebar");
+  toggle.setAttribute("title", "Tutup sidebar");
+  // Menambahkan tombol ke dalam sidebar
+  toggle.innerHTML = `<i class="fa-solid fa-angles-left"></i>`;
+  sidebar.appendChild(toggle);
+
+  // Mengambil preferensi sidebar yang sebelumnya disimpan
+  const collapsed = store.get("jp_sidebar_collapsed", false);
+
+  // Memasang kondisi awal
+  document.body.classList.toggle("sidebar-collapsed", collapsed);
+
+  updateSidebarButton();
+
+  // Event ketika tombol diklik
+  toggle.addEventListener("click", () => {
+
+    // Membalik kondisi sidebar
+    const isCollapsed = document.body.classList.toggle("sidebar-collapsed");
+
+    // Simpan preferensi pengguna
+    store.set("jp_sidebar_collapsed", isCollapsed);
+    updateSidebarButton();
+  });
+
+  // Mengubah ikon dan keterangan tombol.
+  function updateSidebarButton() {
+    const isCollapsed =
+      document.body.classList.contains("sidebar-collapsed");
+    toggle.innerHTML = isCollapsed
+      ? '<i class="fa-solid fa-angles-right"></i>'
+      : '<i class="fa-solid fa-angles-left"></i>';
+    toggle.setAttribute(
+      "aria-label",
+      isCollapsed ? "Buka sidebar" : "Tutup sidebar"
+    );
+    toggle.setAttribute(
+      "title",
+      isCollapsed ? "Buka sidebar" : "Tutup sidebar"
+    );
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupSidebarToggle(); // mengaktifkan tombol buka/tutup sidebar
   document.body.insertAdjacentHTML("beforeend", `
     <div class="modal-backdrop hidden" id="dialogModal"><div class="modal" role="dialog" aria-modal="true">
       <button class="modal-close" data-close="dialogModal" aria-label="Tutup">×</button>

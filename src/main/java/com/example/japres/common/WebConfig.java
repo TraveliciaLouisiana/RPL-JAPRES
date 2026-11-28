@@ -10,6 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     /** Membuka http://localhost:8080/ langsung ke halaman login. */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/", "/mahasiswa/pages/login.html");
+        registry.addRedirectViewController("/", "/login/login.html");
     }
 }

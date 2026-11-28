@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="/common/global.css">
   <link rel="stylesheet" href="../css/jadwal.css">
-  <script src="../js/api.js" defer></script>
-  <script src="../js/global.js" defer></script>
+  <script src="/common/api.js" defer></script>
+  <script src="/common/global.js" defer></script>
   <script src="../js/jadwal.js" defer></script>
 </head>
 <body data-page="jadwal">
@@ -55,45 +55,26 @@
     </section>
 
     <section class="calendar-wrap">
-      <div class="calendar-grid" id="calendarGrid">
-        <div class="calendar-head time-head">Waktu<small>Minggu ke-15</small></div>
-        <div class="calendar-head" data-day="Senin">SENIN<small>14 Desember</small></div>
-        <div class="calendar-head" data-day="Selasa">SELASA<small>15 Desember</small></div>
-        <div class="calendar-head" data-day="Rabu">RABU<small>16 Desember</small></div>
-        <div class="calendar-head" data-day="Kamis">KAMIS<small>17 Desember</small></div>
-        <div class="calendar-head" data-day="Jumat">JUMAT<small>18 Desember</small></div>
-
-        <div class="time-label">07.00</div>
-        <div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
-
-        <div class="time-label">08.00</div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-
-        <div class="time-label">10.00</div>
-        <div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
-
-        <div class="time-label">12.00</div>
-        <div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
-
-        <div class="time-label">13.00</div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div><div class="calendar-cell"></div>
-
-        <div class="time-label">15.00</div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-        <div class="calendar-cell"></div>
-
-        <div class="time-label">17.00</div>
-        <div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div><div class="calendar-cell"></div>
+      <div class="calendar" id="calendar">
+        <!-- Baris judul hari (atribut data-day dipakai jadwal.js untuk menyorot hari presentasi) -->
+        <div class="cal-row cal-head-row">
+          <!-- <div class="calendar-head time-head">Waktu<small>Minggu ke-15</small></div> -->
+          <div class="calendar-head time-head"></div>
+          <div class="calendar-head" data-day="Senin">SENIN<small>14 Desember</small></div>
+          <div class="calendar-head" data-day="Selasa">SELASA<small>15 Desember</small></div>
+          <div class="calendar-head" data-day="Rabu">RABU<small>16 Desember</small></div>
+          <div class="calendar-head" data-day="Kamis">KAMIS<small>17 Desember</small></div>
+          <div class="calendar-head" data-day="Jumat">JUMAT<small>18 Desember</small></div>
+        </div>
+        <!-- Badan kalender: kolom jam + 5 kolom hari. Isinya diisi oleh jadwal.js -->
+        <div class="cal-row cal-body">
+          <div class="time-col" id="timeCol"></div>
+          <div class="day-col" data-day="Senin"></div>
+          <div class="day-col" data-day="Selasa"></div>
+          <div class="day-col" data-day="Rabu"></div>
+          <div class="day-col" data-day="Kamis"></div>
+          <div class="day-col" data-day="Jumat"></div>
+        </div>
       </div>
     </section>
   </main>

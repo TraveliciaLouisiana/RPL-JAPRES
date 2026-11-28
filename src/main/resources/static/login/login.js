@@ -21,12 +21,12 @@ formLogin.addEventListener("submit", async function (event) {
 
     // Arahkan berdasarkan role
     if (user.role === "admin") {
-        window.location.href = "admin-dashboard.html";
+        window.location.href = "/admin/pages/admin-dashboard.html";
     }
     else if (user.role === "mahasiswa") {
-        window.location.href = "jadwal.html";
+        window.location.href = "/mahasiswa/pages/jadwal.html";
     }
     else if (user.role === "dosen") {
-        window.location.href = "dosen-dashboard.html";
+        window.location.href = "/dosen/pages/dashboard.html";
     }
 });

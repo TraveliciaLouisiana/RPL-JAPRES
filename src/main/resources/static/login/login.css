@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #EFF4FF;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #3E4850;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.loginBox {
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 15px rgba(11, 28, 48, 0.10);
+    border-radius: 14px;
+    background-color: #FFFFFF;
+    padding: 40px 26px;
+}
+
+.loginHeader{
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logoBG {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 15px;
+    background-color: #EFF4FF;
+    border-radius: 12px;
+}
+
+.logo{
+    width: 32px;
+    height: 32px;
+}
+
+.loginBox h1 {
+    margin: 0 0 5px;
+    color: #0B1C30;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.namaJapres {
+    margin: 0;
+    color: #6E7881;
+    font-size: 14px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formField {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.fieldPass {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label {
+    color: #3E4850;
+    font-size: 14px;
+}
+
+.forgotPassword {
+    color: #0EA5E9;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.forgotPassword:hover {
+    text-decoration: underline;
+}
+
+.inputBox {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 48px;
+    gap: 10px;
+    padding: 0 12px;
+    border: 1px solid #6E7881;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+}
+
+.inputBox img {
+    width: 20px;
+    height: 20px;
+}
+
+.inputBox input {
+    flex: 1;
+    height: 100%;
+    padding: 0 2px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #3E4850;
+}
+
+.inputBox input::placeholder {
+    color: #50616B;
+}
+
+.submitButton {
+    width: 100%;
+    height: 48px;
+    border: none;
+    margin-top: 5px;
+    border: none;
+    border-radius: 8px;
+    background-color: #0EA5E9;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: #0B1C30;
+}
+
+.footer {
+    margin: 30px 0 0;
+    color: #6E7881;
+    font-size: 12px;
+    text-align: center;
+}
+/*
+6E7881 abu abu 
+FFFFFF putih 
+0EA5E9 biru
+3E4850 abu gelap 
+0B1C30 navy
+EFF4FF biru muda
+50616B abu kebiruan
+*/

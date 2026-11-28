@@ -7,18 +7,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Semua endpoint halaman mahasiswa. NPM selalu diambil dari sesi login (bukan dari parameter),
  * jadi mahasiswa tidak bisa melihat / mengubah data mahasiswa lain.
+ *
+ * Perubahan konsep kelompok:
+ *  - Endpoint "buat kelompok" (POST /kelompok) DIHAPUS: kelompok dibuat oleh Dosen.
+ *  - Endpoint "gabung" diganti "simpan" (PUT): memilih kelompok lalu menekan tombol Simpan (sekaligus bisa pindah).
  */
 @RestController
 @RequestMapping("/api/portal")
@@ -29,8 +31,6 @@ public class PortalController {
     public PortalController(PortalService service) {
         this.service = service;
     }
-
-    public record BuatKelompokRequest(String kodeMk) {}
 
     private static String npm(HttpServletRequest request) {
         return SessionUser.wajib(request, "mahasiswa").id();
@@ -56,14 +56,10 @@ public class PortalController {
         return service.kelompok(npm(request), kode);
     }
 
-    @PostMapping("/kelompok")
-    public Map<String, String> buatKelompok(@RequestBody BuatKelompokRequest body, HttpServletRequest request) {
-        return service.buatKelompok(npm(request), body.kodeMk());
-    }
-
-    @PostMapping("/kelompok/{id}/gabung")
-    public ResponseEntity<Void> gabung(@PathVariable("id") String id, HttpServletRequest request) {
-        service.gabung(npm(request), id);
+    /** Tombol "Simpan": masuk (atau pindah) ke kelompok {id}. */
+    @PutMapping("/kelompok/{id}/simpan")
+    public ResponseEntity<Void> simpan(@PathVariable("id") String id, HttpServletRequest request) {
+        service.simpan(npm(request), id);
         return ResponseEntity.noContent().build();
     }
 

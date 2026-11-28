@@ -28,7 +28,7 @@ public class PortalService {
         this.jdbc = jdbc;
     }
 
-    // ------------------------------------------------------------------ PROFIL
+    // PROFIL
 
     public Profil profil(String npm) {
         List<Profil> hasil = jdbc.query("SELECT npm, nama, email FROM mahasiswa WHERE npm = ?",
@@ -47,7 +47,7 @@ public class PortalService {
                 ? "20" + npm.substring(3, 5) : "-";
     }
 
-    // ------------------------------------------------------------- MATA KULIAH
+    // MATA KULIAH
 
     /** Mata kuliah yang diambil mahasiswa di FRS dan memiliki tugas besar pada semester yang sama. */
     public List<MataKuliah> mataKuliah(String npm) {
@@ -89,7 +89,7 @@ public class PortalService {
                 .orElseThrow(() -> new ApiException(HttpStatus.FORBIDDEN, "Anda tidak terdaftar pada mata kuliah ini."));
     }
 
-    // ---------------------------------------------------------- JADWAL KULIAH
+    // JADWAL KULIAH
 
     public List<JadwalKuliah> jadwalKuliah(String npm) {
         return jdbc.query("""
@@ -112,7 +112,7 @@ public class PortalService {
                 npm);
     }
 
-    // ---------------------------------------------------------------- KELOMPOK
+    // KELOMPOK
 
     private record AnggotaRow(String idKelompok, Anggota anggota) {}
     private record PresentasiRow(String idKelompok, JadwalPresentasi jadwal) {}
@@ -157,88 +157,64 @@ public class PortalService {
                 },
                 tb).stream().collect(Collectors.toMap(PresentasiRow::idKelompok, PresentasiRow::jadwal));
 
+        // Jadwal presentasi HANYA dikirim ke mahasiswa setelah Dosen mengunci kelompok.
+        // Sebelum dikunci, jadwal (kalaupun sudah ada di database) disembunyikan.
+        boolean dikunci = cekDikunci(tb);
         List<Kelompok> hasil = new ArrayList<>();
         String idSaya = null;
         for (String[] k : daftar) {
             List<Anggota> a = anggota.getOrDefault(k[0], List.of());
             if (a.stream().anyMatch(x -> x.npm().equals(npm))) idSaya = k[0];
-            hasil.add(new Kelompok(k[0], k[1].replaceFirst("(?i)^kelompok\\s*", ""), k[1], a, jadwal.get(k[0])));
+            hasil.add(new Kelompok(k[0], k[1].replaceFirst("(?i)^kelompok\\s*", ""), k[1], a, dikunci ? jadwal.get(k[0]) : null));
         }
-        return new DataKelompok(tb, mk.kuota(), cekDikunci(tb), idSaya, hasil);
+        return new DataKelompok(tb, mk.kuota(), dikunci, idSaya, hasil);
     }
 
-    /** Membuat kelompok baru; pembuatnya otomatis jadi anggota pertama. */
     @Transactional
-    public Map<String, String> buatKelompok(String npm, String kode) {
-        MataKuliah mk = mkByKode(npm, kode);
-        String tb = mk.idTugasBesar();
-
-        if (kunciTugasBesar(tb)) {
-            throw new ApiException(HttpStatus.CONFLICT, "Dosen sudah mengunci jadwal, sehingga kelompok baru tidak dapat dibuat.");
-        }
-        if (sudahDiKelompok(npm, tb)) {
-            throw new ApiException(HttpStatus.CONFLICT, "Anda sudah tergabung di sebuah kelompok untuk mata kuliah ini.");
-        }
-
-        Integer maks = jdbc.queryForObject("""
-                SELECT COALESCE(MAX(CAST(NULLIF(regexp_replace(nama_kelompok, '\\D', '', 'g'), '') AS INTEGER)), 0)
-                FROM kelompok WHERE id_tugas_besar = ?
-                """, Integer.class, tb);
-        int nomor = (maks == null ? 0 : maks) + 1;
-
-        // Mengikuti pola data yang sudah ada: KLP-RPL-01. Kalau bentrok / terlalu panjang, pakai id tugas besar.
-        String id = "KLP-" + mk.singkatan() + "-" + String.format("%02d", nomor);
-        Integer sudahAda = jdbc.queryForObject("SELECT COUNT(*) FROM kelompok WHERE id_kelompok = ?", Integer.class, id);
-        if (id.length() > 15 || (sudahAda != null && sudahAda > 0)) {
-            id = "KLP-" + tb + "-" + String.format("%02d", nomor);
-        }
-
-        jdbc.update("INSERT INTO kelompok (id_kelompok, nama_kelompok, id_tugas_besar) VALUES (?, ?, ?)",
-                id, "Kelompok " + nomor, tb);
-        jdbc.update("INSERT INTO anggota_kelompok (id_kelompok, npm) VALUES (?, ?)", id, npm);
-        return Map.of("idKelompok", id, "nomor", String.valueOf(nomor));
-    }
-
-    /** Masuk ke kelompok yang sudah ada. */
-    @Transactional
-    public void gabung(String npm, String idKelompok) {
+    public void simpan(String npm, String idKelompok) {
         String tb = tugasBesarDariKelompok(idKelompok);
         MataKuliah mk = mkByTugasBesar(npm, tb);
 
+        // kunciTugasBesar = SELECT ... FOR UPDATE: dua mahasiswa yang menyimpan bersamaan tidak bisa melewati kuota
         if (kunciTugasBesar(tb)) {
-            throw new ApiException(HttpStatus.CONFLICT, "Dosen sudah mengunci jadwal, sehingga Anda tidak dapat masuk ke kelompok.");
+            throw new ApiException(HttpStatus.CONFLICT, "Dosen sudah mengunci kelompok, sehingga Anda tidak dapat masuk atau pindah kelompok.");
         }
-        if (sudahDiKelompok(npm, tb)) {
-            throw new ApiException(HttpStatus.CONFLICT,
-                    "Anda sudah tergabung di sebuah kelompok. Setiap mahasiswa hanya dapat berada di maksimal 1 kelompok per mata kuliah.");
-        }
+
+        // Sudah berada di kelompok yang dipilih: tidak ada yang perlu diubah
+        Integer sudahDi = jdbc.queryForObject("SELECT COUNT(*) FROM anggota_kelompok WHERE id_kelompok = ? AND npm = ?", Integer.class, idKelompok, npm);
+        if (sudahDi != null && sudahDi > 0) return;
+
         Integer jumlah = jdbc.queryForObject("SELECT COUNT(*) FROM anggota_kelompok WHERE id_kelompok = ?", Integer.class, idKelompok);
         if (jumlah != null && jumlah >= mk.kuota()) {
-            throw new ApiException(HttpStatus.CONFLICT, "Kelompok ini sudah penuh (kuota " + mk.kuota() + " anggota).");
+            throw new ApiException(HttpStatus.CONFLICT, "Kelompok ini sudah penuh (kuota " + mk.kuota() + " anggota). Silakan pilih kelompok lain.");
         }
+
+        // Hapus keanggotaan lama (di kelompok mana pun pada tugas besar yang sama), lalu masukkan ke kelompok baru
+        jdbc.update("""
+                DELETE FROM anggota_kelompok
+                WHERE npm = ? AND id_kelompok IN (SELECT id_kelompok FROM kelompok WHERE id_tugas_besar = ?)
+                """, npm, tb);
         jdbc.update("INSERT INTO anggota_kelompok (id_kelompok, npm) VALUES (?, ?)", idKelompok, npm);
     }
 
-    /** Keluar dari kelompok. Kelompok yang jadi kosong (dan belum punya jadwal presentasi) ikut dihapus. */
+    /**
+     * Keluar dari kelompok (hanya boleh sebelum dikunci). Kelompok yang menjadi kosong TIDAK dihapus,
+     * karena kelompok dibuat oleh Dosen dan harus tetap tersedia untuk dipilih mahasiswa lain.
+     */
     @Transactional
     public void keluar(String npm, String idKelompok) {
         String tb = tugasBesarDariKelompok(idKelompok);
 
         if (kunciTugasBesar(tb)) {
-            throw new ApiException(HttpStatus.CONFLICT, "Jadwal sudah dikunci oleh Dosen, sehingga Anda tidak dapat keluar dari kelompok.");
+            throw new ApiException(HttpStatus.CONFLICT, "Kelompok sudah dikunci oleh Dosen, sehingga Anda tidak dapat keluar dari kelompok.");
         }
         int terhapus = jdbc.update("DELETE FROM anggota_kelompok WHERE id_kelompok = ? AND npm = ?", idKelompok, npm);
         if (terhapus == 0) {
             throw new ApiException(HttpStatus.NOT_FOUND, "Anda bukan anggota kelompok ini.");
         }
-        Integer sisa = jdbc.queryForObject("SELECT COUNT(*) FROM anggota_kelompok WHERE id_kelompok = ?", Integer.class, idKelompok);
-        Integer presentasi = jdbc.queryForObject("SELECT COUNT(*) FROM presentasi WHERE id_kelompok = ?", Integer.class, idKelompok);
-        if (sisa != null && sisa == 0 && presentasi != null && presentasi == 0) {
-            jdbc.update("DELETE FROM kelompok WHERE id_kelompok = ?", idKelompok);
-        }
     }
 
-    // ------------------------------------------------------------------ HELPER
+    //HELPER
 
     private String tugasBesarDariKelompok(String idKelompok) {
         List<String> tb = jdbc.queryForList("SELECT id_tugas_besar FROM kelompok WHERE id_kelompok = ?", String.class, idKelompok);

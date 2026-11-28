@@ -1,247 +1,93 @@
-.course-summary {
-    background: #fff;
-    border-radius: 14px;
-    min-height: 92px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 1px 2px #182a4510;
-    margin-bottom: 18px;
-    flex-wrap: wrap
+/* =====================================================================
+   kelompok.css  —  Halaman Informasi Kelompok
+   (gaya umum ada di /common/global.css)
+   ===================================================================== */
+
+.group-list { display: grid; gap: 12px; }
+
+/* Satu baris kelompok. SEBELUM dikunci: nama | kuota | tombol (tanpa kolom jadwal).
+   minmax(0, ...) membuat kolom boleh mengecil sehingga tidak "meluber" di laptop 13 inci. */
+.group-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 20px;
+  transition: border-color .15s, box-shadow .15s;
+}
+/* SETELAH dikunci: kolom jadwal presentasi ikut tampil */
+.group-row.with-sched { grid-template-columns: minmax(0, 1.2fr) minmax(0, .9fr) minmax(0, 1.3fr) auto; }
+
+.group-row.full { background: #f8f9fc; }
+.group-row.mine { border-color: #9fd8ee; background: #f7fcff; }                          /* kelompok saya */
+.group-row.selected { border-color: var(--blue); box-shadow: 0 0 0 3px #08a8e830; }      /* kelompok yang sedang dipilih */
+
+.g-name b { display: block; font-size: 17px; margin-bottom: 3px; }
+.g-name small, .g-count small, .g-sched small { color: var(--muted); font-size: 14px; }
+.g-name small { display: block; overflow-wrap: anywhere; }
+.g-count b { display: block; font-size: 16px; }
+.g-count .ok { color: var(--ok); }
+.g-count .full { color: #6b7583; }
+.g-sched b { display: block; font-size: 15px; font-weight: 600; }
+.g-sched .none { color: var(--muted); font-weight: 500; }
+
+/* Kolom tombol: "Info Mahasiswa" + "Pilih" */
+.g-end { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+.g-end button { padding: 12px 16px; border-radius: 11px; font-weight: 700; font-size: 15px; white-space: nowrap; }
+
+/* Tombol "Info Mahasiswa": outline */
+.info-btn { border: 1.5px solid #9fd8ee; background: #fff; color: var(--blue-dark); }
+.info-btn:hover { background: var(--pale); }
+
+/* Tombol "Pilih": outline biru -> terisi biru saat dipilih; abu-abu bila penuh; hijau bila sudah tergabung */
+.pick-btn { min-width: 112px; border: 1.5px solid var(--blue); background: #fff; color: var(--blue-dark); }
+.pick-btn:hover:not(:disabled) { background: var(--pale); }
+.pick-btn.on { background: var(--blue); color: #fff; }
+.pick-btn.on:hover { background: #008fc9 !important; }
+.pick-btn:disabled { border-color: var(--line); background: #f1f3f8; color: #8a94a3; cursor: not-allowed; }
+.pick-btn.saved:disabled { border-color: #bfe6d3; background: var(--ok-bg); color: var(--ok); }
+
+.empty { color: var(--muted); text-align: center; padding: 10px; }
+
+/* Bar "Simpan" di bawah daftar */
+.save-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.save-msg { color: #3e4856; font-size: 15.5px; flex: 1 1 280px; }
+.save-actions { display: flex; gap: 10px; align-items: center; }
+.save-bar .primary-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ----- Isi popup "Info Mahasiswa" ----- */
+.info-meta { color: var(--muted); font-size: 15px; margin-bottom: 14px; }
+.info-sub { font-size: 14px; font-weight: 700; color: var(--ink); margin: 16px 0 8px; text-transform: uppercase; letter-spacing: .05em; }
+.mini-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.mini-list li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.mini-list li:last-child { border-bottom: 0; }
+.mini-list li.me { background: #f7fcff; }
+.mini-list .npm { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* ----- Laptop kecil (901–1200px): rapatkan sedikit, tetap 1 baris ----- */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .group-row { gap: 14px; padding: 14px 16px; }
+  .g-name b { font-size: 16px; }
+  .g-end button { padding: 10px 12px; font-size: 14px; }
+  .pick-btn { min-width: 98px; }
 }
 
-.summary-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #edf3ff;
-    padding: 9px 12px;
-    border-radius: 9px;
-    min-width: 130px
+/* ----- Tablet / HP (<=900px): baris jadi 2 kolom, tombol turun ke bawah ----- */
+@media (max-width: 900px) {
+  .group-row, .group-row.with-sched { grid-template-columns: 1fr 1fr; row-gap: 12px; }
+  .g-end { grid-column: 1 / -1; justify-content: flex-start; flex-wrap: wrap; }
 }
-
-.summary-chip>span {
-    font-size: 18px;
-    color: #0076ae
+@media (max-width: 520px) {
+  .group-row, .group-row.with-sched { grid-template-columns: 1fr; }
 }
-
-.summary-chip div {
-    display: grid;
-    gap: 1px
-}
-
-.summary-chip small {
-    font-size: 11px;
-    color: #485565
-}
-
-.summary-chip strong {
-    font-size: 13px;
-    color: #006fa7
-}
-
-.summary-spacer {
-    flex: 1
-}
-
-.section-heading {
-    margin: 24px 0 14px
-}
-
-.section-heading h2 {
-    font-size: 18px;
-    margin: 0 0 5px
-}
-
-.section-heading p {
-    margin: 0;
-    color: #778191;
-    font-size: 12px
-}
-
-.member-list {
-    display: grid;
-    gap: 10px
-}
-
-.member-card {
-    background: #fff;
-    border: 1px solid #f0f2f7;
-    border-radius: 13px;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    min-height: 86px
-}
-
-.member-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: #e4f6ff;
-    color: var(--blue);
-    display: grid;
-    place-items: center;
-    font-size: 25px;
-    flex-shrink: 0
-}
-
-.member-details {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap
-}
-
-.member-details strong {
-    font-size: 15px
-}
-
-.member-details small {
-    display: block;
-    width: 100%;
-    color: #586474;
-    margin-top: -3px
-}
-
-.member-status {
-    background: #e2efff;
-    color: #0076ae;
-    border-radius: 20px;
-    padding: 4px 8px;
-    font-size: 10px
-}
-
-.group-list {
-    display: grid;
-    gap: 10px
-}
-
-.group-card {
-    background: #fff;
-    border: 1px solid #f0f2f7;
-    border-radius: 13px;
-    padding: 17px 20px;
-    display: grid;
-    grid-template-columns: 170px 1fr;
-    align-items: center;
-    gap: 18px;
-    min-height: 110px
-}
-
-.group-actions {
-    display: grid;
-    justify-items: start;
-    gap: 8px
-}
-
-.group-name {
-    background: #edf3ff;
-    color: #0076ae;
-    padding: 9px 13px;
-    border-radius: 9px;
-    font-weight: 600
-}
-
-.group-members {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px
-}
-
-.mini-member {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0
-}
-
-.mini-member .member-avatar {
-    width: 46px;
-    height: 46px
-}
-
-.mini-member strong {
-    font-size: 14px;
-    white-space: nowrap
-}
-
-.mini-member small {
-    display: block;
-    color: #657080;
-    margin-top: 3px
-}
-
-.join-btn {
-    border: 0;
-    background: var(--blue);
-    color: white;
-    padding: 10px 13px;
-    border-radius: 8px;
-    font-weight: 600
-}
-
-.join-btn:hover {
-    background: #008fc9
-}
-
-.empty-state {
-    background: #fff;
-    border-radius: 12px;
-    padding: 30px;
-    text-align: center;
-    color: #6b7583
-}
-
-@media(max-width:1000px) {
-    .group-members {
-        grid-template-columns: repeat(2, minmax(0, 1fr))
-    }
-}
-
-@media(max-width:650px) {
-    .course-summary {
-        padding: 14px
-    }
-
-    .group-card {
-        grid-template-columns: 1fr
-    }
-
-    .group-actions {
-        display: flex;
-        align-items: center;
-        justify-content: space-between
-    }
-
-    .group-members {
-        grid-template-columns: 1fr
-    }
-
-    .member-card {
-        padding: 14px
-    }
-
-    .summary-spacer {
-        display: none
-    }
-}
-/* ===== Halaman Informasi Kelompok (selebihnya memakai global.css) ===== */
-.avatar.num{font-size:24px}
-.group-list{display:grid;gap:12px}
-.group-row{display:grid;grid-template-columns:1.3fr .9fr 1.4fr 170px;align-items:center;gap:20px;border:1px solid var(--line);border-radius:14px;padding:18px 22px}
-.group-row.full{background:#f8f9fc}
-.g-name b{display:block;font-size:17px;margin-bottom:3px}
-.g-name small,.g-count small,.g-sched small{color:var(--muted);font-size:14px}
-.g-count b{display:block;font-size:16px}
-.g-count .ok{color:var(--ok)}
-.g-count .full{color:#6b7583}
-.g-sched b{display:block;font-size:15px;font-weight:600}
-.g-sched .none{color:var(--muted);font-weight:500}
-.join-btn{border:0;background:var(--blue);color:#fff;font-weight:700;font-size:15.5px;padding:13px 16px;border-radius:11px;width:100%;white-space:nowrap}
-.join-btn:hover{background:#008fc9}
-.g-end{min-height:1px}
-.empty{color:var(--muted);text-align:center;padding:10px}
-@media(max-width:1100px){.group-row{grid-template-columns:1fr 1fr;row-gap:12px}.g-end{grid-column:1/-1}}

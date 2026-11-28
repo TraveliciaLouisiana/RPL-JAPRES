@@ -1,51 +1,247 @@
-/* ===== Halaman Jadwal Perkuliahan ===== */
-.legend{background:#edf2ff;border-radius:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;color:#4a5667;font-size:14.5px;margin-bottom:16px}
-#resetFilter{margin-left:auto;font-size:14px}
-.dot{width:15px;height:15px;border-radius:5px;display:inline-block;border:1px solid #c9d8f2}
-.dot-class{background:#d8e6ff}
-.dot-presentation{background:var(--blue);border-color:var(--blue)}
-.dot-extra{background:#fff;border:2px solid var(--blue)}
-.dot-free{background:#fff}
+/* =====================================================================
+   jadwal.css  —  Halaman Jadwal Perkuliahan
+   ===================================================================== */
 
-.calendar-wrap{overflow-x:auto;border-radius:14px;background:#fff;box-shadow:0 1px 2px #182a4510}
-.calendar-grid{min-width:900px;display:grid;grid-template-columns:100px repeat(5,minmax(150px,1fr));grid-template-rows:88px repeat(7,minmax(128px,auto));border:1px solid #edf0f6}
-.calendar-head{background:#eaf0ff;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:17px;border-right:1px solid #e4e9f2}
-.calendar-head small{font-size:13px;font-weight:500;margin-top:5px;color:#586579}
-.calendar-head.today{background:#d9efff;color:#0078aa}
-.calendar-head.today small{color:#0078aa;font-weight:600}
-.time-head{background:#e2ebff}
-.time-label{background:#f0f3fa;display:flex;justify-content:center;padding-top:14px;color:#6b7687;font-size:14px;font-weight:600;border-top:1px solid #e9edf4}
+/* ===== Legenda + filter ===== */
+.legend {
+    background: #edf2ff;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    color: #4a5667;
+    font-size: 14.5px;
+    margin-bottom: 16px
+}
 
-.calendar-cell{display:flex;flex-direction:column;gap:3px;background:#fff;border-left:1px solid #edf0f6;border-top:1px solid #edf0f6;padding:4px;min-width:0}
-.event{flex:1;min-height:0;width:100%;border:0;border-radius:10px;text-align:left;padding:11px 12px;background:#eaf0fc;color:#1b2b42;display:flex;flex-direction:column;gap:5px;overflow:hidden}
-.event:hover{filter:brightness(.97)}
-.event small{font-size:11px;letter-spacing:.02em;color:#0089c5;font-weight:700}
-.event b{font-size:16px;line-height:1.3}
-.event span{font-size:13.5px;color:#4d5a6a}
+#resetFilter { margin-left: auto; font-size: 14px }
 
-.presentation-event{background:var(--blue);color:#fff;gap:7px}
-.event-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
-.event-badge{background:#fff;color:var(--blue-dark)!important;border-radius:14px;padding:3px 9px;font-size:11px!important;font-weight:700;letter-spacing:.02em}
-.event-time{font-size:13px!important;font-weight:600;color:#fff!important}
-.event-title{font-size:16px;line-height:1.3}
-.event-place{font-size:13px!important;color:#e6f6ff!important}
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+    display: inline-block;
+    border: 1px solid #c9d8f2
+}
 
-.extra-event{background:#fff;border:2px solid var(--blue);padding:9px 10px}
-.extra-event b{font-size:15px}
+/* "Kuliah Pribadi": pastel bergaris, mirip kartu mata kuliah */
+.dot-class { background: repeating-linear-gradient(135deg, #8fd3f3 0 2px, #e3f5fd 2px 5px); border-color: #8fd3f3 }
+.dot-presentation { background: #0b4f7c; border-color: #0b4f7c }
+.dot-extra { background: #fff; border: 2px solid var(--blue) }
+.dot-free { background: #f4faff }
 
-#modalBody{line-height:1.8;color:#4c5868}
-#modalBody strong{color:var(--ink)}
-.modal-note{margin-top:10px;padding:10px 14px;background:#f2f8ff;border-radius:10px;font-size:14px;line-height:1.5;color:#3e5470}
+.filter-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid #cfe3fb;
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+    transition: opacity .15s, background .15s
+}
+.filter-chip input { position: absolute; opacity: 0; pointer-events: none }
+.filter-chip.off { background: transparent; border-color: transparent; color: #6b7687; opacity: .6 }
+.filter-chip:hover { opacity: 1 }
+.filter-chip input:focus-visible+.dot { outline: 2px solid var(--blue); outline-offset: 2px }
+.filter-chip .dot { display: grid; place-items: center; font-style: normal; font-size: 10px; font-weight: 700; line-height: 1 }
+.filter-chip input:checked+.dot::after { content: "✓"; color: var(--blue-dark) }
+.filter-chip input:checked+.dot.dot-presentation::after { color: #fff }
 
-/* ===== Filter kalender (legenda yang bisa dicentang) ===== */
-.filter-chip{position:relative;display:flex;align-items:center;gap:9px;padding:7px 14px;border-radius:999px;border:1px solid #cfe3fb;background:#fff;color:var(--ink);cursor:pointer;user-select:none;transition:opacity .15s,background .15s}
-.filter-chip input{position:absolute;opacity:0;pointer-events:none}
-.filter-chip.off{background:transparent;border-color:transparent;color:#6b7687;opacity:.6}
-.filter-chip:hover{opacity:1}
-.filter-chip input:focus-visible + .dot{outline:2px solid var(--blue);outline-offset:2px}
-.filter-chip .dot{display:grid;place-items:center;font-style:normal;font-size:10px;font-weight:700;line-height:1}
-.filter-chip input:checked + .dot::after{content:"✓";color:var(--blue-dark)}
-.filter-chip input:checked + .dot.dot-presentation::after{color:#fff}
-.calendar-cell{position:relative}
-.calendar-cell.free{background:#f4faff}
-.calendar-cell.free::after{content:"";position:absolute;inset:5px;border:1.5px dashed #bfe0f5;border-radius:10px;pointer-events:none}
+/* ===== Kalender ===== */
+.calendar-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;                       /* layar sempit: kalender digeser ke samping, bukan merusak halaman */
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 1px 2px #182a4510
+}
+
+.calendar {
+    /* --hour (tinggi 1 jam) & --hours (jumlah jam) diisi oleh jadwal.js */
+    --hour: 72px;
+    --hours: 11;
+    --time-col: 64px;
+    min-width: 720px;                       /* cukup untuk 5 hari; di bawah ini baru muncul scroll */
+    border: 1px solid #edf0f6
+}
+
+/* Baris judul dan badan memakai pembagian kolom yang sama agar sejajar: [kolom jam] + 5 hari */
+.cal-row {
+    display: grid;
+    grid-template-columns: var(--time-col) repeat(5, minmax(0, 1fr));
+}
+
+.calendar-head {
+    background: #eaf0ff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 76px;
+    padding: 6px 4px;
+    font-weight: 700;
+    font-size: 16px;
+    border-right: 1px solid #e4e9f2
+}
+.calendar-head small { font-size: 12.5px; font-weight: 500; margin-top: 4px; color: #586579 }
+.calendar-head.today { background: #d9efff; color: #0078aa }
+.calendar-head.today small { color: #0078aa; font-weight: 600 }
+.time-head { background: #e2ebff; font-size: 14px }
+
+/* Kolom jam di kiri: satu label per jam, tingginya = tinggi 1 jam */
+.time-col { background: #f0f3fa }
+.time-label {
+    height: var(--hour);
+    padding-top: 4px;
+    text-align: center;
+    color: #6b7687;
+    font-size: 13px;
+    font-weight: 600;
+    border-top: 1px solid #e3e8f1
+}
+
+/* Kolom hari: tinggi = jumlah jam x tinggi 1 jam. Garis tipis tiap jam digambar dengan gradasi berulang. */
+.day-col {
+    position: relative;                     /* kartu di dalamnya memakai position:absolute */
+    height: calc(var(--hour) * var(--hours));
+    border-left: 1px solid #edf0f6;
+    background-image: repeating-linear-gradient(to bottom, #e3e8f1 0, #e3e8f1 1px, transparent 1px, transparent var(--hour));
+    min-width: 0
+}
+.day-col.free { background-color: #f4faff }   /* filter "Slot Kosong": area tanpa kartu berwarna biru muda */
+
+/* ===== Kartu jadwal (dasar; warna/motif tiap jenis ada di bawah) ===== */
+.event {
+    position: absolute;                     /* top/height/left/width diatur oleh jadwal.js */
+    border: 0;
+    border-radius: 8px;
+    padding: 6px 9px;
+    text-align: left;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(20, 36, 59, .22);
+    transition: transform .15s, box-shadow .15s
+}
+.event:hover { z-index: 3; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(20, 36, 59, .28) }
+
+.event .ev-time {
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, .45)
+}
+.event .ev-title { font-size: 12.5px; font-weight: 700; line-height: 1.25; overflow-wrap: anywhere }
+.event .ev-place, .event .ev-sub { font-size: 11px; line-height: 1.3; opacity: .95; overflow-wrap: anywhere }
+
+/* Kartu pendek (mis. presentasi 20 menit): isi dijadikan 1 baris */
+.event.compact { flex-direction: row; align-items: center; gap: 6px; padding: 2px 8px }
+.event.compact .ev-time { border: 0; margin: 0; padding: 0; flex-shrink: 0 }
+.event.compact .ev-title { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-size: 12px }
+.event.compact .ev-place, .event.compact .ev-sub { display: none }
+.event.compact .ev-badge { margin: 0; flex-shrink: 0 }
+.presentation-event.compact .ev-title { display: none }   /* presentasi pendek: cukup "PRESENTASI + jam" */
+
+/* =====================================================================
+   KARTU MATA KULIAH: gaya "kaca buram" (frosted) + motif halus
+   - Tiap mata kuliah punya 1 warna  (.subject-color-0 ... 9)  -> hanya mengisi variabel --accent
+   - Tiap mata kuliah punya 1 motif  (.pattern-0 ... 3)        -> garis miring / titik / kotak / garis datar
+   - Warna turunan (latar, motif, tulisan) dihitung otomatis dari --accent memakai color-mix(),
+     jadi untuk menambah warna cukup tambah 1 baris --accent.
+   ===================================================================== */
+.class-event {
+    --glow: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 62%);  /* pendar lembut di pojok kanan atas */
+    --line: color-mix(in srgb, var(--accent) 22%, transparent);                                                          /* warna motif */
+    color: color-mix(in srgb, var(--accent) 38%, #10203a);                                                               /* tulisan: gelap bernuansa warna */
+    background-color: color-mix(in srgb, var(--accent) 13%, rgba(255, 255, 255, .78));                                   /* latar pastel agak transparan */
+    background-image: var(--glow);
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    border-left: 4px solid var(--accent);                                                                                /* garis aksen di kiri */
+    -webkit-backdrop-filter: blur(6px) saturate(140%);
+    backdrop-filter: blur(6px) saturate(140%);                                                                           /* efek blur */
+    box-shadow: 0 1px 3px rgba(20, 36, 59, .10)
+}
+.class-event .ev-time { border-bottom-color: color-mix(in srgb, var(--accent) 35%, transparent); font-weight: 700 }
+.class-event .ev-title { color: color-mix(in srgb, var(--accent) 30%, #0b1a30) }
+
+/* Motif (4 jenis) */
+.pattern-0 { background-image: repeating-linear-gradient(135deg, var(--line) 0 2px, transparent 2px 9px), var(--glow) }                      /* garis miring */
+.pattern-1 { background-image: radial-gradient(var(--line) 1.6px, transparent 1.9px), var(--glow); background-size: 10px 10px, auto }        /* titik-titik */
+.pattern-2 { background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px), var(--glow); background-size: 12px 12px, 12px 12px, auto }  /* kotak-kotak */
+.pattern-3 { background-image: repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 7px), var(--glow) }                        /* garis datar */
+
+/* 10 warna aksen (bernuansa biru-cyan sesuai tema JAPRES, ditambah beberapa warna pelengkap) */
+.subject-color-0 { --accent: #0ea5e9 }   /* biru langit */
+.subject-color-1 { --accent: #14b8a6 }   /* toska */
+.subject-color-2 { --accent: #6366f1 }   /* nila */
+.subject-color-3 { --accent: #22a06b }   /* hijau mint */
+.subject-color-4 { --accent: #8b5cf6 }   /* ungu */
+.subject-color-5 { --accent: #f08a4b }   /* persik */
+.subject-color-6 { --accent: #e5628a }   /* mawar */
+.subject-color-7 { --accent: #d4a017 }   /* kuning emas */
+.subject-color-8 { --accent: #64748b }   /* abu kebiruan */
+.subject-color-9 { --accent: #c05ccf }   /* fuchsia */
+
+/* =====================================================================
+   KARTU PRESENTASI: sengaja BEDA TOTAL dari kartu kuliah
+   -> biru tua pekat + garis tepi cyan + label "PRESENTASI" (putih) di pojok kiri atas
+   ===================================================================== */
+.presentation-event {
+    background-color: #0a2f4d;
+    background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .07) 0 6px, transparent 6px 12px);   /* garis miring tipis */
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+    z-index: 2
+}
+.ev-badge {
+    align-self: flex-start;
+    background: #fff;
+    color: var(--blue-dark);
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    margin-bottom: 2px
+}
+
+/* Kegiatan tambahan pribadi: putih dengan garis biru */
+.extra-event { background: #fff; color: var(--ink); border: 2px solid var(--blue); padding: 4px 8px }
+.extra-event .ev-time { border-bottom-color: #cfe3fb; color: var(--blue-dark) }
+
+/* ===== Popup detail ===== */
+#modalBody { line-height: 1.8; color: #4c5868 }
+#modalBody strong { color: var(--ink) }
+.modal-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: #f2f8ff;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #3e5470
+}
+
+/* ===== Responsif ===== */
+@media (max-width: 1100px) {
+    .calendar-head { font-size: 14.5px }
+}
+@media (max-width: 600px) {
+    .legend { gap: 7px; padding: 10px }
+    .filter-chip { font-size: 12px; padding: 7px 9px }
+}

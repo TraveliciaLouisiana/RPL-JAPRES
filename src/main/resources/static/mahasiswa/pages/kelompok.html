@@ -8,10 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="/common/global.css">
   <link rel="stylesheet" href="../css/kelompok.css">
-  <script src="../js/api.js" defer></script>
-  <script src="../js/global.js" defer></script>
+  <script src="/common/api.js" defer></script>
+  <script src="/common/global.js" defer></script>
   <script src="../js/kelompok.js" defer></script>
 </head>
 <body data-page="kelompok">
@@ -33,7 +33,7 @@
     <header class="topbar">
       <div class="course-line"><span class="blue-icon"><i class="fa-solid fa-graduation-cap"></i></span><span id="courseText"></span></div>
       <div class="top-actions">
-        <button class="primary-btn" id="newGroupBtn"><i class="fa-solid fa-plus"></i> Buat Kelompok Baru</button>
+        <!-- Tombol "Buat Kelompok Baru" DIHAPUS: kelompok dibuat oleh Dosen, bukan mahasiswa -->
         <button class="profile-btn" data-action="profile" aria-haspopup="dialog" title="Lihat profil">
           <span class="avatar-small"><i class="fa-solid fa-user"></i></span>
           <span class="who"><strong>Vivian Kimora</strong><small>Mahasiswa</small></span>
@@ -42,16 +42,26 @@
       </div>
     </header>
 
+    <!-- Pemberitahuan bila Dosen sudah mengunci jadwal (diisi oleh kelompok.js) -->
     <section id="lockNotice"></section>
-    <section class="student-card" id="groupCard"></section>
-    <section class="info-bar" id="scheduleBar"></section>
-    <section class="panel" id="ownPanel"></section>
 
+    <!--
+      Alur halaman ini:
+        1) Dosen membuat kelompok (kosong).
+        2) Mahasiswa memilih satu kelompok -> klik "Simpan" (otomatis bergabung / pindah).
+        3) Dosen mengunci kelompok -> mahasiswa tidak bisa pindah lagi, lalu Dosen menetapkan jadwal presentasi.
+      Jadwal presentasi hanya tampil setelah dikunci (diatur di backend & kelompok.js).
+    -->
     <section class="panel">
       <div class="panel-top">
-        <div><h2>Kelompok Lain</h2><p>Periksa kuota sebelum masuk. Setiap mahasiswa hanya boleh berada di satu kelompok per mata kuliah.</p></div>
+        <div>
+          <h2>Bergabung ke Kelompok</h2>
+          <p>Periksa kuota sebelum memilih. Setiap mahasiswa hanya boleh berada di satu kelompok per mata kuliah.</p>
+        </div>
       </div>
       <div class="group-list" id="groupList"></div>
+      <!-- Bar "Simpan": tampil hanya selama kelompok belum dikunci (diisi kelompok.js) -->
+      <div class="save-bar hidden" id="saveBar"></div>
     </section>
   </main>
 </body>
